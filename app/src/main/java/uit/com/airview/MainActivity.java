@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(Tag,"Act1 onCreate");
-        setContentView(R.layout.screen3);
+        setContentView(R.layout.screen2);
 
 //        name = findViewById(R.id.name);
 //        btn = findViewById(R.id.act1_btn);
