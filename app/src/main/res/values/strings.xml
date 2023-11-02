@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">AirView</string>
-    <string name="screen1_summary">An application for UITer, provides usefulinformation for you to have a great day at UIT</string>
+    <string name="app_name" translatable="false">AirView</string>
+    <string name="screen1_summary" translatable="false">An application for UITer, provides useful information for you to have a great day at UIT</string>
+    <string name="signUp">SIGN UP</string>
+    <string name="signIn">SIGN IN</string>
+    <string name="resetPwd">Forgot your password?</string>
+    <string name="back">BACK</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirmPwd">Confirm password</string>
+    <string name="or">OR</string>
 </resources>

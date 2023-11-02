@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signUp">ĐĂNG KÝ</string>
+    <string name="signIn">ĐĂNG NHẬP</string>
+    <string name="resetPwd">Quên mật khẩu?</string>
+    <string name="back">TRỞ VỀ</string>
+    <string name="username">Tên đăng nhập</string>
+    <string name="password">Mật khẩu</string>
+    <string name="confirmPwd">Xác nhận mật khẩu</string>
+    <string name="or">HOẶC</string>
+</resources>
