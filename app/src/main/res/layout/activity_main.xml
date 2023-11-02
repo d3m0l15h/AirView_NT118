@@ -1,44 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
-    android:orientation="vertical"
+    android:background="@drawable/green_screen"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/act1_btn"
-        android:layout_width="111dp"
-        android:layout_height="59dp"
-        android:layout_marginBottom="272dp"
-        android:text="Activity 2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <ImageButton
+        android:id="@+id/languageBtn"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/transparent"
+        app:srcCompat="@mipmap/vietnam" />
 
     <TextView
-        android:id="@+id/message"
-        android:layout_width="403dp"
-        android:layout_height="101dp"
-        android:layout_marginTop="196dp"
-        android:gravity="center"
-        android:stateListAnimator="@android:anim/slide_in_left"
-        android:text="Hello World!"
-        android:textSize="80px"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/name"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="108dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+
+    <Button
+        android:id="@+id/s1_signIn"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout2"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:text="@string/signIn"
+        android:textSize="17sp" />
+
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linearLayout"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="6dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/line" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/or"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/line" />
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/s1_signUp"
+            android:layout_width="244dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/resetPwd"
+            android:layout_centerHorizontal="true"
+            android:text="@string/signUp"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:gravity="center"
+            android:layout_above="@id/s1_signUp"
+            android:layout_marginBottom="5dp">
+
+            <ImageButton
+                android:id="@+id/google"
+                android:layout_width="61dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="112dp"
+                android:layout_marginEnd="5dp"
+                android:background="#00FFFFFF"
+                app:srcCompat="@mipmap/google" />
+
+            <ImageButton
+                android:id="@+id/facebook"
+                android:layout_width="61dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="112dp"
+                android:background="#00FFFFFF"
+                app:srcCompat="@mipmap/facebook" />
+        </LinearLayout>
+
+    <Button
+        android:id="@+id/resetPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/transparent"
+        android:text="@string/resetPwd"
+        android:textColor="#606060" />
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="135dp"
+        android:layout_height="123dp"
+        android:layout_above="@id/textView3"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@drawable/air" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/screen1_summary"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="italic" />
+
+</RelativeLayout>

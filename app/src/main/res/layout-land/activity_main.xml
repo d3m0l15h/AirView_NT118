@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/languageBtn"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -30,12 +30,12 @@
 
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/s1_signIn"
         android:layout_width="194dp"
         android:layout_height="40dp"
         android:layout_above="@id/layout2"
         android:layout_centerInParent="true"
-        android:text="SIGN IN"
+        android:text="@string/signIn"
         android:textSize="14sp" />
 
     <LinearLayout
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:text="OR"
+            android:text="@string/or"
             android:textSize="16sp" />
 
         <ImageView
@@ -70,24 +70,24 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/s1_signUp"
         android:layout_width="246dp"
         android:layout_height="40dp"
-        android:layout_above="@id/button5"
+        android:layout_above="@id/resetPwd"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="13dp"
-        android:text="SIGN UP"
+        android:layout_marginBottom="10dp"
+        android:text="@string/signUp"
         android:textSize="14sp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="62dp"
-        android:layout_above="@id/button2"
+        android:layout_above="@id/s1_signUp"
         android:gravity="center">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/google"
             android:layout_width="61dp"
             android:layout_height="match_parent"
             android:layout_marginStart="112dp"
@@ -96,7 +96,7 @@
             app:srcCompat="@mipmap/google" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/facebook"
             android:layout_width="61dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="112dp"
@@ -105,14 +105,14 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/resetPwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="15dp"
         android:background="@color/transparent"
-        android:text="Reset your password?"
+        android:text="@string/resetPwd"
         android:textColor="#606060" />
 
 
@@ -120,7 +120,7 @@
         android:id="@+id/imageView4"
         android:layout_width="118dp"
         android:layout_height="wrap_content"
-        android:layout_above="@id/button3"
+        android:layout_above="@id/s1_signIn"
         android:layout_centerInParent="true"
         android:layout_marginBottom="10dp"
         app:srcCompat="@drawable/air" />
