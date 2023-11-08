@@ -2,12 +2,16 @@ package uit.com.airview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,9 +23,11 @@ import uit.com.airview.util.APIInterface;
 public class SignInActivity extends BaseActivity {
     private Button back;
     private Button signIn;
+    private TextView toSignUp;
     private APIInterface apiInterface;
     private EditText username;
     private EditText password;
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +38,16 @@ public class SignInActivity extends BaseActivity {
 
         username = findViewById(R.id.s3_username);
         password = findViewById(R.id.s3_pwd);
+        toSignUp = findViewById(R.id.s3_toSignUp);
 
         back = findViewById(R.id.s3_back);
         back.setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        toSignUp.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
         });
 

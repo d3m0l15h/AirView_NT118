@@ -8,4 +8,5 @@
     <string name="password">Mật khẩu</string>
     <string name="confirmPwd">Xác nhận mật khẩu</string>
     <string name="or">HOẶC</string>
+<!--    <string name="or">Bạn chưa có tài khoản? Đăng Kí Ngay</string>-->
 </resources>
