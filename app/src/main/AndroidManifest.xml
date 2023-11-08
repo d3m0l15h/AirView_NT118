@@ -28,6 +28,10 @@
         <activity
             android:name=".HomeActivity"
             android:exported="false"/>
+        <activity android:name=".ResetPwdActivity"
+            android:exported="false"/>
+        <activity android:name=".ResetEmbed"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
