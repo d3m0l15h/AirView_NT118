@@ -1,4 +1,4 @@
-package uit.com.airview.model;
+package uit.com.airview.response;
 
 public class LoginResponse {
     private String access_token;
