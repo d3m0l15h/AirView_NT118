@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SignUpActivity extends BaseActivity {
     private Button back;
     private Button signUp;
+    private TextView toSignIn;
     private EditText username;
     private EditText email;
     private EditText pwd;
@@ -26,6 +28,13 @@ public class SignUpActivity extends BaseActivity {
         back = findViewById(R.id.s2_back);
         back.setOnClickListener(view -> {
             finish();
+        });
+
+        // To Sign In Activity
+        toSignIn = findViewById(R.id.s2_toSignIn);
+        toSignIn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
         });
 
         //Input data

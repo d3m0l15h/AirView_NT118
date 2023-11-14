@@ -8,6 +8,9 @@
     <string name="password">Mật khẩu</string>
     <string name="confirmPwd">Xác nhận mật khẩu</string>
     <string name="or">HOẶC</string>
+
+<!--    <string name="or">Bạn chưa có tài khoản? Đăng Kí Ngay</string>-->
+
     <string name="reset">ĐỔI MẬT KHẨU</string>
     <string name="oldPwd">Mật khẩu cũ</string>
     <string name="newPwd">Mật khẩu mới</string>
@@ -24,3 +27,4 @@
     <string name="signupSucc">Đăng ký thành công</string>
     <string name="welcome">"Xin chào, "</string>
 </resources>
+

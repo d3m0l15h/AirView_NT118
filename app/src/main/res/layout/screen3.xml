@@ -44,10 +44,10 @@
         android:id="@+id/s3_back"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:text="@string/back"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"
+        android:text="@string/back"
         android:textSize="17sp" />
 
 
@@ -98,5 +98,37 @@
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="#99000000" />
+
+    <LinearLayout
+        android:id="@+id/toSignInLayOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:paddingLeft="10dp"
+            android:text="Don't have an account? "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/s3_toSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:text="Sign up"
+            android:textColor="#6750a4"
+            android:textFontWeight="700"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </RelativeLayout>
