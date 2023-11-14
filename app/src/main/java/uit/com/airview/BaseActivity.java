@@ -18,6 +18,7 @@ import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity {
     protected ImageButton languageButton;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences prefs = newBase.getSharedPreferences("Settings", MODE_PRIVATE);
@@ -46,17 +47,14 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void setupLanguageButton(int buttonId) {
         languageButton = findViewById(buttonId);
-        languageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String currentLang = getCurrentLanguage();
-                String newLang = currentLang.equals("en") ? "vi" : "en";
-                changeLanguage(newLang);
-                // Update icon immediately
-                updateFlagIcon();
-                // Refresh the current activity to apply the new language
-                recreate();
-            }
+        languageButton.setOnClickListener(view -> {
+            String currentLang = getCurrentLanguage();
+            String newLang = currentLang.equals("en") ? "vi" : "en";
+            changeLanguage(newLang);
+            // Update icon immediately
+            updateFlagIcon();
+            // Refresh the current activity to apply the new language
+            recreate();
         });
     }
 
@@ -70,15 +68,6 @@ public class BaseActivity extends AppCompatActivity {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
         return updateResourcesLocale(context, locale);
-    }
-
-    @SuppressWarnings("deprecation")
-    private Context updateResourcesLocaleLegacy(Context context, Locale locale) {
-        Resources resources = context.getResources();
-        Configuration configuration = resources.getConfiguration();
-        configuration.locale = locale;
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        return context;
     }
 
     private Context updateResourcesLocale(Context context, Locale locale) {

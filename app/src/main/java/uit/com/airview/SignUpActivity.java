@@ -27,8 +27,7 @@ public class SignUpActivity extends BaseActivity {
         //Back button
         back = findViewById(R.id.s2_back);
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            finish();
         });
 
         // To Sign In Activity

@@ -2,11 +2,10 @@ package uit.com.airview;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -30,7 +29,7 @@ public class SignUpEmbed extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up_embed);
+        setContentView(R.layout.webview_embed);
         progress = findViewById(R.id.progress);
 
         //Get data
@@ -38,6 +37,9 @@ public class SignUpEmbed extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
         rePassword = getIntent().getStringExtra("rePassword");
+
+        CookieManager.getInstance().removeAllCookies(null);
+        CookieManager.getInstance().removeSessionCookies(null);
 
         //Configure webview setting
         webview = findViewById(R.id.webView);
@@ -48,9 +50,8 @@ public class SignUpEmbed extends AppCompatActivity {
         webview.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("WebView", "Page loaded: " + url);
                 super.onPageFinished(view, url);
-
+                Log.i("URL", url);
                 if(url.contains("swagger")){
                     clickButtonWhenAvailable(view, ".btn.authorize.unlocked");
                 }
@@ -73,24 +74,23 @@ public class SignUpEmbed extends AppCompatActivity {
                                     " else return null\n" +
                                     " })();",
                             value -> {
-                                Log.i("WebView", "hasFormSubmitted: " + url);
                                 if (value != null && !value.equals("null")){
                                     switch (value){
                                         case "\"emailError\"":
-                                            Toast.makeText(SignUpEmbed.this, "Email already exists", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignUpEmbed.this, R.string.emailErr, Toast.LENGTH_SHORT).show();
                                             break;
                                         case "\"invalidEmail\"":
-                                            Toast.makeText(SignUpEmbed.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignUpEmbed.this, R.string.invalidEmail, Toast.LENGTH_SHORT).show();
                                             break;
                                         case "\"usernameError\"":
-                                            Toast.makeText(SignUpEmbed.this, "Username already exists", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignUpEmbed.this, R.string.userErr, Toast.LENGTH_SHORT).show();
                                             break;
                                         case "\"passwordError\"":
-                                            Toast.makeText(SignUpEmbed.this, "Password confirmation doesn't match", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignUpEmbed.this, R.string.confirmErr, Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 } else {
-                                    Toast.makeText(SignUpEmbed.this, "Sign up successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpEmbed.this, R.string.signupSucc, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(SignUpEmbed.this, MainActivity.class);
                                     startActivity(intent);
                                 }
@@ -99,7 +99,6 @@ public class SignUpEmbed extends AppCompatActivity {
                 }
 
                 if(url.contains("login-actions/registration")){
-                    Log.i("Webview", "Register: " + url);
                     String userScript = "document.getElementById('username').value = '" + username + "';";
                     String emailScript = "document.getElementById('email').value = '" + email + "';";
                     String pwdScript = "document.getElementById('password').value = '"+ password + "';";
