@@ -32,12 +32,6 @@ public class SignInActivity extends BaseActivity {
 
     private Button back;
     private Button signIn;
-    private TextView toSignUp;
-    private APIInterface apiInterface;
-    private EditText username;
-    private EditText password;
-    @SuppressLint("WrongViewCast")
-
     private APIInterface apiInterface;
     private EditText username;
     private EditText password;
@@ -52,7 +46,7 @@ public class SignInActivity extends BaseActivity {
 
         username = findViewById(R.id.s3_username);
         password = findViewById(R.id.s3_pwd);
-        toSignUp = findViewById(R.id.s3_toSignUp);
+        TextView toSignUp = findViewById(R.id.s3_toSignUp);
 
         Button back = findViewById(R.id.s3_back);
         back.setOnClickListener(view -> {

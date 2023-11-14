@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
 
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         //Request admin token
-        Call<LoginResponse> call = apiInterface.login("openremote", "admin", "admin", "password");
+        Call<LoginResponse> call = apiInterface.login("openremote", "admin", "1", "password");
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
