@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,10 @@ public class SignUpActivity extends BaseActivity {
         //Sign up button
         signUp = findViewById(R.id.s2_signUp);
         signUp.setOnClickListener(view -> {
+            if(username.getText().toString().trim().isEmpty() || email.getText().toString().trim().isEmpty() || pwd.getText().toString().trim().isEmpty() || rePwd.getText().toString().trim().isEmpty()){
+                Toast.makeText(this, "Fill in the blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent();
             intent.setClass(this, SignUpEmbed.class);
 

@@ -17,8 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SignUpEmbed extends AppCompatActivity {
     private static final int CHECK_INTERVAL_MS = 500; // Every half a second
     private static final int TIMEOUT_MS = 10000; // 10 seconds
-    private WebView webview;
-    private ProgressBar progress;
     private boolean hasFormSubmitted = false;
     private String username;
     private String email;
@@ -30,7 +28,7 @@ public class SignUpEmbed extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_embed);
-        progress = findViewById(R.id.progress);
+        ProgressBar progress = findViewById(R.id.progress);
 
         //Get data
         username = getIntent().getStringExtra("username");
@@ -42,21 +40,21 @@ public class SignUpEmbed extends AppCompatActivity {
         CookieManager.getInstance().removeSessionCookies(null);
 
         //Configure webview setting
-        webview = findViewById(R.id.webView);
+        WebView webview = findViewById(R.id.webView);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webview.getSettings().setDomStorageEnabled(true);
 
-        webview.setWebViewClient(new WebViewClient(){
+        webview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 Log.i("URL", url);
-                if(url.contains("swagger")){
-                    clickButtonWhenAvailable(view, ".btn.authorize.unlocked");
+                if (url.contains("swagger")) {
+                    clickButtonWhenAvailable(view);
                 }
 
-                if(url.contains("openid-connect/auth") || url.contains("login-actions/authenticate")){
+                if (url.contains("openid-connect/auth") || url.contains("login-actions/authenticate")) {
                     view.evaluateJavascript("document.querySelector('a.btn.waves-effect.waves-light').click();", null);
                 }
 
@@ -74,8 +72,8 @@ public class SignUpEmbed extends AppCompatActivity {
                                     " else return null\n" +
                                     " })();",
                             value -> {
-                                if (value != null && !value.equals("null")){
-                                    switch (value){
+                                if (value != null && !value.equals("null")) {
+                                    switch (value) {
                                         case "\"emailError\"":
                                             Toast.makeText(SignUpEmbed.this, R.string.emailErr, Toast.LENGTH_SHORT).show();
                                             break;
@@ -98,39 +96,39 @@ public class SignUpEmbed extends AppCompatActivity {
                             });
                 }
 
-                if(url.contains("login-actions/registration")){
+                if (url.contains("login-actions/registration")) {
                     String userScript = "document.getElementById('username').value = '" + username + "';";
                     String emailScript = "document.getElementById('email').value = '" + email + "';";
-                    String pwdScript = "document.getElementById('password').value = '"+ password + "';";
+                    String pwdScript = "document.getElementById('password').value = '" + password + "';";
                     String rePwdScript = "document.getElementById('password-confirm').value = '" + rePassword + "';";
 
                     view.evaluateJavascript(userScript, null);
                     view.evaluateJavascript(emailScript, null);
                     view.evaluateJavascript(pwdScript, null);
                     view.evaluateJavascript(rePwdScript, null);
-                    if(!hasFormSubmitted) {
+                    if (!hasFormSubmitted) {
                         view.evaluateJavascript("document.querySelector('button[name=\"register\"]').click();", null);
                         hasFormSubmitted = true;
                     }
                 }
             }
-            });
+        });
         webview.loadUrl("https://uiot.ixxc.dev/swagger/#/");
     }
 
-    private void clickButtonWhenAvailable(WebView webView, String selector) {
+    private void clickButtonWhenAvailable(WebView webView) {
         final long startTime = System.currentTimeMillis();
 
-        final Runnable checkInitialButtonExistence  = new Runnable() {
+        final Runnable checkInitialButtonExistence = new Runnable() {
             @Override
             public void run() {
                 webView.evaluateJavascript(
-                        "(function(selector) { return !!document.querySelector(selector); })('" + selector + "');",
+                        "(function(selector) { return !!document.querySelector(selector); })('" + ".btn.authorize.unlocked" + "');",
                         value -> {
                             // If button exists or we've reached timeout, try clicking or exit
                             if ("true".equals(value) || System.currentTimeMillis() - startTime > TIMEOUT_MS) {
-                                webView.evaluateJavascript("document.querySelector('" + selector + "').click();", null);
-                                webView.evaluateJavascript("document.querySelector('.btn.modal-btn.auth.authorize.button').click();",null);
+                                webView.evaluateJavascript("document.querySelector('" + ".btn.authorize.unlocked" + "').click();", null);
+                                webView.evaluateJavascript("document.querySelector('.btn.modal-btn.auth.authorize.button').click();", null);
                             } else {
                                 // Otherwise, keep checking
                                 new Handler().postDelayed(this, CHECK_INTERVAL_MS);
@@ -140,6 +138,6 @@ public class SignUpEmbed extends AppCompatActivity {
             }
         };
         // Start the checking
-        new Handler().postDelayed(checkInitialButtonExistence , CHECK_INTERVAL_MS);
+        new Handler().postDelayed(checkInitialButtonExistence, CHECK_INTERVAL_MS);
     }
 }

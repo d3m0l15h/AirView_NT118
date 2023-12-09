@@ -3,7 +3,7 @@
     <style name="Base.Theme.AirView" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:fontFamily">@font/applefont</item>
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
     </style>
 
     <style name="Theme.AirView" parent="Base.Theme.AirView" />

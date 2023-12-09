@@ -24,4 +24,5 @@
     <string name="userErr">Username already exists!</string>
     <string name="signupSucc">Signup successfully</string>
     <string name="welcome">"Welcome, "</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
 </resources>

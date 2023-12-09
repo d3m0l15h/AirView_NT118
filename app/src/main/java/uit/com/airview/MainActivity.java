@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
             startActivity(intent);
         });
 
-        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(this).create(APIInterface.class);
         //Request admin token
         Call<LoginResponse> call = apiInterface.login("openremote", "admin", "1", "password");
         call.enqueue(new Callback<LoginResponse>() {
@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
                     @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("admin_token", response.body().getAccess_token());
+                    editor.putLong("admin_token_expiration_time", System.currentTimeMillis() + 86400);
                     editor.apply();
                 } else {
                     Toast.makeText(MainActivity.this, R.string.connErr, Toast.LENGTH_SHORT).show();

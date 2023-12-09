@@ -2,107 +2,195 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/afternoonbg"
-    tools:context=".HomeActivity">
+    tools:context=".DashboardActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!-- Phần bên trái -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="start"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="20dp"
-            app:srcCompat="@mipmap/user" />
-        <TextView
-            android:id="@+id/home_username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text=" "
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-
-    </LinearLayout>
-
-        <!-- Phần bên phải -->
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            app:tint="@color/white"
-            android:src="@drawable/menu" />
-
-    </LinearLayout>
-
-
-    <TextView
+    <RelativeLayout
+        android:id="@+id/aqiLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="80dp"
-        android:text="Today, Oct 18 5:10"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:layout_centerInParent="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:background="@drawable/afternoon_circle_shape">
+        <com.google.android.material.circularreveal.CircularRevealFrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:id="@+id/airQualityProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                tools:progress="80" />
+        </com.google.android.material.circularreveal.CircularRevealFrameLayout>
+
+
+        <uit.com.airview.util.StrokeTextView
+            android:id="@+id/aqi"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"
+            android:fontFamily="@font/roboto_mono_bold"
+            android:text="500"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
+
+        <uit.com.airview.util.StrokeTextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/aqi"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_mono_bold"
+            android:text="AQI"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:background="@drawable/afternoon_border"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/menu"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/userIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@mipmap/user" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/userIcon"
+            android:text="Welcome, user "
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
 
     <LinearLayout
+        android:id="@+id/dayLayout"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_marginTop="120dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_above="@id/aqiLayout"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/afternoon_widget"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+        <uit.com.airview.util.StrokeTextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_black"
+            android:paddingTop="5dp"
+            android:text="FRIDAY"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                app:tint="@color/white"
-                android:src="@drawable/white_balance_sunny" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:text=" It's Sunny" />
+        <uit.com.airview.util.StrokeTextView
+            android:id="@+id/dmy"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/roboto_black"
+            android:text="08 DECEMBER, 2023."
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/weatherLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/dayLayout"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/aqiLayout"
+        android:background="@drawable/afternoon_widget"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-            <TextView
-                android:id="@+id/temperature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_gravity="center"
-                android:textColor="@color/white"
-                android:textSize="100dp" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/weather"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/clouds" />
+
+        <uit.com.airview.util.StrokeTextView
+            android:id="@+id/weatherTv"
+            android:layout_width="94dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Cloud"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/windLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/dayLayout"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/aqiLayout"
+        android:background="@drawable/afternoon_widget"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/wind"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/wind" />
+
+        <uit.com.airview.util.StrokeTextView
+            android:id="@+id/windTv"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="2.06 km/h"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -156,6 +244,7 @@
                         app:tint="@color/red" />
 
                     <TextView
+                        android:id="@+id/temperature"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Phần 1" />
@@ -178,6 +267,7 @@
                         app:tint="@color/blue" />
 
                     <TextView
+                        android:id="@+id/humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Phần 2" />
@@ -199,6 +289,7 @@
                         app:tint="@color/black" />
 
                     <TextView
+                        android:id="@+id/air"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Phần 3" />

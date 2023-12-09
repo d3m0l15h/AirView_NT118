@@ -1,25 +1,18 @@
 package uit.com.airview;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import uit.com.airview.util.APIClient;
 import uit.com.airview.util.APIInterface;
-import uit.com.airview.util.ResetPasswordBody;
 
 public class ResetEmbed extends AppCompatActivity {
     private static final int CHECK_INTERVAL_MS = 500; // Every half a second
@@ -30,7 +23,7 @@ public class ResetEmbed extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_embed);
-        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(this).create(APIInterface.class);
 
         //Get data
         String username = getIntent().getStringExtra("username");
