@@ -2,17 +2,25 @@ package uit.com.airview;
 
 import android.annotation.SuppressLint;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,9 +29,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,11 +49,15 @@ import uit.com.airview.util.APIInterface;
 import uit.com.airview.util.StrokeTextView;
 import uit.com.airview.util.Util;
 
+import android.view.MenuItem;
+import android.widget.PopupMenu;
+
 public class DashboardActivity extends AppCompatActivity {
     TextView home_username;
     private ImageView water_percent;
     private ImageView thermometer;
     private ImageView molecule_co2;
+    private ImageView menu_btn;
     private APIInterface apiInterface;
 
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
@@ -70,6 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
         ProgressBar airQualityProgressBar = findViewById(R.id.airQualityProgressBar);
         RelativeLayout aqiLayout = findViewById(R.id.aqiLayout);
         StrokeTextView aqiTv = findViewById(R.id.aqi);
+        menu_btn = findViewById(R.id.menu_icon);
 
         apiInterface = APIClient.getClient(this).create(APIInterface.class);
         SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
@@ -79,6 +94,15 @@ public class DashboardActivity extends AppCompatActivity {
         thermometer = findViewById(R.id.thermometer);
         water_percent = findViewById(R.id.water_percent);
         molecule_co2 = findViewById(R.id.molecule_co2);
+
+        menu_btn.setOnClickListener(view -> {
+            Log.d("ADebugTag", "Value: " + menu_btn);
+            showMenu(view, R.menu.overflow_menu);
+        });
+
+        setTooltip(thermometer, "Temperature");
+        setTooltip(water_percent, "Humidity");
+        setTooltip(molecule_co2, "Pollutant level");
 
         //Change background based on time
         Calendar calendar = Calendar.getInstance();
@@ -103,12 +127,12 @@ public class DashboardActivity extends AppCompatActivity {
             aqiLayout.setBackgroundResource(R.drawable.afternoon_circle_shape);
         } else if (hour >= 18 && hour < 21) {
             // Evening
-            relativeLayout.setBackgroundResource(R.drawable.eveningbg);
-            dayLayout.setBackgroundResource(R.drawable.evening_widget);
-            weatherLayout.setBackgroundResource(R.drawable.evening_widget);
-            windLayout.setBackgroundResource(R.drawable.evening_widget);
-            layout.setBackgroundResource(R.drawable.evening_border);
-            aqiLayout.setBackgroundResource(R.drawable.evening_circle_shape);
+//            relativeLayout.setBackgroundResource(R.drawable.eveningbg);
+//            dayLayout.setBackgroundResource(R.drawable.evening_widget);
+//            weatherLayout.setBackgroundResource(R.drawable.evening_widget);
+//            windLayout.setBackgroundResource(R.drawable.evening_widget);
+//            layout.setBackgroundResource(R.drawable.evening_border);
+//            aqiLayout.setBackgroundResource(R.drawable.evening_circle_shape);
         } else {
             // Night
             relativeLayout.setBackgroundResource(R.drawable.nightbg);
@@ -127,7 +151,7 @@ public class DashboardActivity extends AppCompatActivity {
         String formattedDate = dateFormat.format(calendar.getTime());
         dmy.setText(formattedDate.toUpperCase());
 
-        Call<Asset2> call = apiInterface.getAsset2("4EqQeQ0L4YNWNNTzvTOqjy","Bearer " + sharedPreferences.getString("user_token",""));
+        Call<Asset2> call = apiInterface.getAsset2("4EqQeQ0L4YNWNNTzvTOqjy", "Bearer " + sharedPreferences.getString("user_token", ""));
         call.enqueue(new retrofit2.Callback<Asset2>() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -138,13 +162,13 @@ public class DashboardActivity extends AppCompatActivity {
                     assert asset != null;
                     //Get weather
                     Weather weather = asset.getAttributes().getData().getValue().getWeather()[0];
-                    switch (weather.getMain()){
+                    switch (weather.getMain()) {
                         case "Clouds":
                             weatherImg.setImageResource(R.mipmap.clouds);
                             weatherTv.setText("Clouds");
                             break;
                         case "Clear":
-                            if(hour >= 18 || hour < 6)
+                            if (hour >= 18 || hour < 6)
                                 weatherImg.setImageResource(R.mipmap.night);
                             else
                                 weatherImg.setImageResource(R.mipmap.clear_sky);
@@ -160,13 +184,13 @@ public class DashboardActivity extends AppCompatActivity {
                             break;
                     }
                     //Get wind
-                    windTv.setText(asset.getAttributes().getData().getValue().getWind().getSpeed()+" m/s");
+                    windTv.setText(asset.getAttributes().getData().getValue().getWind().getSpeed() + " m/s");
                     //Get temperature
-                    temperature.setText(asset.getAttributes().getData().getValue().getMain().getTemp()+"°C");
+                    temperature.setText(asset.getAttributes().getData().getValue().getMain().getTemp() + "°C");
                     //Get humidity
-                    humidity.setText(asset.getAttributes().getData().getValue().getMain().getHumidity()+"%");
+                    humidity.setText(asset.getAttributes().getData().getValue().getMain().getHumidity() + "%");
                     //Get air
-                    Call<Asset> call1 = apiInterface.getAsset("4lt7fyHy3SZMgUsECxiOgQ","Bearer " + sharedPreferences.getString("user_token",""));
+                    Call<Asset> call1 = apiInterface.getAsset("4lt7fyHy3SZMgUsECxiOgQ", "Bearer " + sharedPreferences.getString("user_token", ""));
                     call1.enqueue(new retrofit2.Callback<Asset>() {
                         @SuppressLint("SetTextI18n")
                         @Override
@@ -204,15 +228,16 @@ public class DashboardActivity extends AppCompatActivity {
                 System.out.println(R.string.networkErr);
             }
         });
+    }
 
-
-        // Temperature icon
-        thermometer.setOnTouchListener((v, event) -> {
+    @SuppressLint("ClickableViewAccessibility")
+    private void setTooltip(View view, String text) {
+        view.setOnTouchListener((View v, MotionEvent event) -> {
             PopupWindow popupWindow = new PopupWindow(v.getContext());
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     TextView tooltipView = new TextView(v.getContext());
-                    tooltipView.setText("Temperature");
+                    tooltipView.setText(text);
 
                     popupWindow.setContentView(tooltipView);
                     popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -220,63 +245,7 @@ public class DashboardActivity extends AppCompatActivity {
                     popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
                     int[] location = new int[2];
-                    thermometer.getLocationOnScreen(location);
-                    popupWindow.showAtLocation(v, Gravity.TOP | Gravity.START, location[0]+popupWindow.getWidth() / 2, location[1] - popupWindow.getHeight() - 50);
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(popupWindow::dismiss, 2000);
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    popupWindow.dismiss();
-                    break;
-            }
-            return true;
-        });
-
-        // Humidity icon
-        water_percent.setOnTouchListener((v, event) -> {
-            PopupWindow popupWindow = new PopupWindow(v.getContext());
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    TextView tooltipView = new TextView(v.getContext());
-                    tooltipView.setText("Humidity");
-
-                    popupWindow.setContentView(tooltipView);
-                    popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-
-                    int[] location = new int[2];
-                    water_percent.getLocationOnScreen(location);
-                    popupWindow.showAtLocation(v, Gravity.TOP | Gravity.START, location[0] +popupWindow.getWidth() / 2, location[1] - popupWindow.getHeight() - 50);
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(popupWindow::dismiss, 2000);
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    popupWindow.dismiss();
-                    break;
-            }
-            return true;
-        });
-
-        // Pollutant level tooltip Icon
-        molecule_co2.setOnTouchListener((v, event) -> {
-            PopupWindow popupWindow = new PopupWindow(v.getContext());
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    TextView tooltipView = new TextView(v.getContext());
-                    tooltipView.setText("CO2");
-
-                    popupWindow.setContentView(tooltipView);
-                    popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-
-                    int[] location = new int[2];
-                    molecule_co2.getLocationOnScreen(location);
+                    v.getLocationOnScreen(location);
                     popupWindow.showAtLocation(v, Gravity.TOP | Gravity.START, location[0] + popupWindow.getWidth() / 2, location[1] - popupWindow.getHeight() - 50);
 
                     Handler handler = new Handler();
@@ -289,5 +258,74 @@ public class DashboardActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.overflow_menu, menu);
+        return true;
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void showMenu(View v, @MenuRes int menuRes) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.getMenuInflater().inflate(menuRes, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                // Respond to menu item click.
+                String itemName = getResources().getResourceEntryName(menuItem.getItemId());
+                switch (itemName) {
+                    case "option_1":
+                        // Do something when menu_item_one is selected
+
+                        break;
+                    case "option_2":
+                        Intent intent = new Intent(v.getContext(), ChartActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "option_3":
+                        // Do something when menu_item_two is selected
+                        break;
+                    // Add more cases for other menu items as needed
+                }
+                Log.d("ADebugTag", "Value: " + itemName);
+
+                return true; // Return true if handled, false otherwise.
+            }
+        });
+
+        popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu popupMenu) {
+                // Respond to popup being dismissed.
+            }
+        });
+
+        if (popup.getMenu() instanceof MenuBuilder) {
+            MenuBuilder menuBuilder = (MenuBuilder) popup.getMenu();
+            menuBuilder.setOptionalIconsVisible(true);
+            for (MenuItem item : menuBuilder.getVisibleItems()) {
+                float iconMarginPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+                int iconMarginPxInt = (int) iconMarginPx;
+                if (item.getIcon() != null) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(new InsetDrawable(item.getIcon(), iconMarginPxInt, 0, iconMarginPxInt, 0));
+                    } else {
+                        Drawable icon = new InsetDrawable(item.getIcon(), iconMarginPxInt, 0, iconMarginPxInt, 0) {
+                            @Override
+                            public int getIntrinsicWidth() {
+                                return super.getIntrinsicWidth() + iconMarginPxInt + iconMarginPxInt;
+                            }
+                        };
+                        item.setIcon(icon);
+                    }
+                }
+            }
+        }
+        // Show the popup menu.
+        popup.show();
     }
 }
