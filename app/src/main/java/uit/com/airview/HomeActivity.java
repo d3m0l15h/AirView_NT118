@@ -5,6 +5,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,6 @@ import uit.com.airview.util.APIInterface;
 
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-    private APIInterface apiInterface;
     private MapView mapView;
     private GoogleMap gmap;
 
@@ -50,15 +50,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
+        sharedPreferences.edit().putString("token_type", "user").apply();
 
         gmap = googleMap;
         LatLng asset1 = new LatLng( 10.869778736885038, 106.80280655508835);
         gmap.addMarker(new MarkerOptions().position(asset1).title("Asset1"));
 
         //Call asset api
-        apiInterface = APIClient.getClient(this).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(this).create(APIInterface.class);
         Call<Asset2> call = apiInterface.getAsset2("4EqQeQ0L4YNWNNTzvTOqjy","Bearer " + sharedPreferences.getString("user_token",""));
         call.enqueue(new retrofit2.Callback<Asset2>() {
             @Override

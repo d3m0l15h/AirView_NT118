@@ -74,6 +74,7 @@ public class SignInActivity extends BaseActivity {
                         assert response.body() != null;
                         SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
                         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
+                        //Refresh token
                         editor.putString("user_token", response.body().getAccess_token());
                         editor.putLong("user_token_expiration_time", System.currentTimeMillis() + 86400);
                         //Get user info
@@ -90,6 +91,7 @@ public class SignInActivity extends BaseActivity {
                                 editor.putString("username", response.body().getUsername());
                                 editor.putLong("createdOn", response.body().getCreatedOn());
                                 editor.putString("password", pwd);
+                                editor.putBoolean("isLoggedIn", true);
                                 editor.apply();
                                 //Register new user
                                 if(!response.body().getUsername().equals("admin")){

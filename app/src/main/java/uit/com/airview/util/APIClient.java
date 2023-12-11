@@ -60,7 +60,7 @@ public class APIClient {
             builder.addInterceptor(interceptor);
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("PREF", Context.MODE_PRIVATE);
-            builder.addInterceptor(new TokenInterceptor(sharedPreferences));
+            builder.addInterceptor(new TokenInterceptor(sharedPreferences, context));
             //Bear token
 //            builder.addInterceptor(chain -> {
 //                Request newRequest  = chain.request().newBuilder()

@@ -23,7 +23,7 @@ public class StrokeTextView extends androidx.appcompat.widget.AppCompatTextView 
     protected void onDraw(Canvas canvas) {
         final Paint paint = this.getPaint();
         paint.setStyle(Paint.Style.STROKE);
-        float strokeWidth = 10.0f;
+        float strokeWidth = 6.0f;
         paint.setStrokeWidth(strokeWidth);
         int strokeColor = Color.BLACK;
         this.setTextColor(strokeColor);

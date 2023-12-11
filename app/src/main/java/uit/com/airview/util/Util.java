@@ -1,24 +1,6 @@
 package uit.com.airview.util;
 
 public class Util {
-    APIInterface apiInterface;
-    public static double calculateAQI(double pm25, double pm10, double co2) {
-
-        double aqi;
-
-        // Weighted factors for each pollutant
-        double pm25Weight = 0.3;
-        double pm10Weight = 0.5;
-        double co2Weight = 0.2;
-
-        // Calculate AQI
-        aqi = (pm25Weight * pm25) +
-                (pm10Weight * pm10) +
-                (co2Weight * co2);
-
-        return aqi;
-
-    }
     public static String getAirQualityLevel(double aqi) {
         if (aqi >= 0 && aqi <= 50) {
             return "Good";

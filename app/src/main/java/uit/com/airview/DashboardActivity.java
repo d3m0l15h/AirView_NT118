@@ -2,6 +2,7 @@ package uit.com.airview;
 
 import android.annotation.SuppressLint;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,9 +12,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 
+import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -23,11 +26,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -45,12 +57,48 @@ public class DashboardActivity extends AppCompatActivity {
     private ImageView thermometer;
     private ImageView molecule_co2;
     private APIInterface apiInterface;
-
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen4);
+        SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_profile) {
+                // Handle profile action
+            } else if (id == R.id.nav_logout) {
+                sharedPreferences.edit().putBoolean("isLoggedIn", false).apply();
+                Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+                startActivity(intent);
+                finishAffinity();
+            }
+            drawerLayout.closeDrawer(GravityCompat.END);
+            return true;
+        });
+
+        ImageButton navbarButton = findViewById(R.id.navbar);
+        navbarButton.setOnClickListener(view->{
+                if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    drawerLayout.closeDrawer(GravityCompat.END);
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.END);
+                }
+        });
 
         //Get view element
         home_username = findViewById(R.id.username);
@@ -72,7 +120,7 @@ public class DashboardActivity extends AppCompatActivity {
         StrokeTextView aqiTv = findViewById(R.id.aqi);
 
         apiInterface = APIClient.getClient(this).create(APIInterface.class);
-        SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
+        sharedPreferences.edit().putString("token_type", "user").apply();
         home_username.setText(getString(R.string.welcome) + sharedPreferences.getString("username", ""));
 
         //Icon Tooltip
@@ -178,10 +226,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 //Get air quality
                                 air.setText(String.valueOf(asset1.getAttributes().getCO2().getValue()));
                                 // Calculate the AQI based on the air quality data
-                                double pm25 = asset1.getAttributes().getPM25().getValue();
-                                double pm10 = asset1.getAttributes().getPM10().getValue();
-                                double co2 = asset1.getAttributes().getCO2().getValue();
-                                double aqi = Util.calculateAQI(pm25, pm10, co2);
+                                double aqi = asset1.getAttributes().calculateAQI();
 
                                 int progress = (int) ((aqi / 500.0) * 100); // Assuming the maximum AQI is 500
 
@@ -289,5 +334,12 @@ public class DashboardActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

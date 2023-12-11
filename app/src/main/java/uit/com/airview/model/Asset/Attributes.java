@@ -63,4 +63,21 @@ public class Attributes {
     public uit.com.airview.model.Asset.uVIndex getuVIndex() {
         return uVIndex;
     }
+    public double calculateAQI() {
+
+        double aqi;
+
+        // Weighted factors for each pollutant
+        double pm25Weight = 0.3;
+        double pm10Weight = 0.5;
+        double co2Weight = 0.2;
+
+        // Calculate AQI
+        aqi = (pm25Weight * PM25.getValue()) +
+                (pm10Weight * PM10.getValue()) +
+                (co2Weight * CO2.getValue());
+
+        return aqi;
+
+    }
 }
