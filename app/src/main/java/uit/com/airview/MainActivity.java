@@ -21,6 +21,7 @@ import uit.com.airview.util.APIClient;
 import uit.com.airview.util.APIInterface;
 
 public class MainActivity extends BaseActivity {
+    @SuppressLint("ShortAlarm")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,7 @@ public class MainActivity extends BaseActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         // Set the alarm to start immediately and repeat every hour
         long interval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
 
         //Set the token type to null
         SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);

@@ -5,11 +5,4 @@
             android:icon="@mipmap/account"
             android:title="Profile" />
     </group>
-
-    <group android:id="@+id/bottom_group">
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@mipmap/logout"
-            android:title="Sign out" />
-    </group>
 </menu>

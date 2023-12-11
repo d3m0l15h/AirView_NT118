@@ -25,9 +25,10 @@ public class FetchDataService extends Service {
         //
         APIInterface apiInterface = APIClient.getClient(this).create(APIInterface.class);
         SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("isLoggedIn", false)) {
+        if(!sharedPreferences.getBoolean("isLoggedIn", false)) {
             return START_STICKY;
         }
+        Log.d("Debug","Fetching data...");
         String token = sharedPreferences.getString("user_token", null);
         Call<Asset> call = apiInterface.getAsset("4lt7fyHy3SZMgUsECxiOgQ","Bearer " + token);
         call.enqueue(new retrofit2.Callback<Asset>() {

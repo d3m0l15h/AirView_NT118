@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,14 +82,17 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_profile) {
                 // Handle profile action
-            } else if (id == R.id.nav_logout) {
-                sharedPreferences.edit().putBoolean("isLoggedIn", false).apply();
-                Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
-                startActivity(intent);
-                finishAffinity();
             }
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
+        });
+        //Logout button
+        Button logout = findViewById(R.id.nav_logout);
+        logout.setOnClickListener(view -> {
+            sharedPreferences.edit().putBoolean("isLoggedIn", false).apply();
+            Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
+            startActivity(intent);
+            finishAffinity();
         });
 
         ImageButton navbarButton = findViewById(R.id.navbar);
