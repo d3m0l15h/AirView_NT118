@@ -53,7 +53,7 @@ import android.view.MenuItem;
 import android.widget.PopupMenu;
 
 public class DashboardActivity extends AppCompatActivity {
-    TextView home_username;
+    private TextView home_username;
     private ImageView water_percent;
     private ImageView thermometer;
     private ImageView molecule_co2;
@@ -65,6 +65,8 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen4);
+
+        Log.d("ADebugTag", "Value: " + apiInterface);
 
         //Get view element
         home_username = findViewById(R.id.username);
@@ -127,12 +129,12 @@ public class DashboardActivity extends AppCompatActivity {
             aqiLayout.setBackgroundResource(R.drawable.afternoon_circle_shape);
         } else if (hour >= 18 && hour < 21) {
             // Evening
-//            relativeLayout.setBackgroundResource(R.drawable.eveningbg);
-//            dayLayout.setBackgroundResource(R.drawable.evening_widget);
-//            weatherLayout.setBackgroundResource(R.drawable.evening_widget);
-//            windLayout.setBackgroundResource(R.drawable.evening_widget);
-//            layout.setBackgroundResource(R.drawable.evening_border);
-//            aqiLayout.setBackgroundResource(R.drawable.evening_circle_shape);
+            relativeLayout.setBackgroundResource(R.drawable.eveningbg);
+            dayLayout.setBackgroundResource(R.drawable.evening_widget);
+            weatherLayout.setBackgroundResource(R.drawable.evening_widget);
+            windLayout.setBackgroundResource(R.drawable.evening_widget);
+            layout.setBackgroundResource(R.drawable.evening_border);
+            aqiLayout.setBackgroundResource(R.drawable.evening_circle_shape);
         } else {
             // Night
             relativeLayout.setBackgroundResource(R.drawable.nightbg);

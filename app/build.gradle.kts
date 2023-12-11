@@ -55,6 +55,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.6.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation ("androidx.room:room-runtime:2.6.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))

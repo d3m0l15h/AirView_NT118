@@ -19,10 +19,12 @@
             app:navigationIcon="@drawable/back_btn"
             app:title="Chart"
             app:titleTextColor="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -94,8 +96,18 @@
                 app:icon="@drawable/tab_search"
                 android:layout_gravity="center"
                 />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_marginTop="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="260dp" />
+
         </LinearLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+
 
 </RelativeLayout>

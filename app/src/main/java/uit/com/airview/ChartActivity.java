@@ -2,6 +2,7 @@ package uit.com.airview;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,7 +17,13 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -24,6 +31,7 @@ public class ChartActivity extends AppCompatActivity {
     private MaterialToolbar topAppBar;
     private TextInputLayout dateTextField;
     private TextInputEditText dateTextInput;
+    private LineChart lineChart;
 //    privave AutoCompleteTextView attribiteDate;
 
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
@@ -31,6 +39,10 @@ public class ChartActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen5);
+
+        lineChart = findViewById(R.id.lineChart);
+        setupLineChart();
+        setData();
 
         topAppBar = findViewById(R.id.topAppBar);
         dateTextField = findViewById(R.id.dateTextField);
@@ -83,4 +95,34 @@ public class ChartActivity extends AppCompatActivity {
 
 
     }
+    private void setupLineChart() {
+        // Customize chart settings if needed
+        // For example: set description, axis, legend, etc.
+        lineChart.getDescription().setEnabled(false);
+        // ... Other configurations
+    }
+
+    private void setData() {
+        ArrayList<Entry> entries = new ArrayList<>();
+
+        // Add sample data points (x, y)
+        entries.add(new Entry(0, 10));
+        entries.add(new Entry(1, 20));
+        entries.add(new Entry(2, 15));
+        entries.add(new Entry(3, 25));
+        entries.add(new Entry(4, 18));
+
+        LineDataSet dataSet = new LineDataSet(entries, "Sample Data");
+
+        // Customize the appearance of the line
+        dataSet.setColor(Color.BLUE);
+        dataSet.setValueTextColor(Color.RED);
+
+        LineData lineData = new LineData(dataSet);
+
+        // Set data to the chart
+        lineChart.setData(lineData);
+        lineChart.invalidate(); // Refresh chart
+    }
 }
+
