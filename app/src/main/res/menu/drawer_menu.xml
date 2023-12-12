@@ -4,5 +4,9 @@
             android:id="@+id/nav_profile"
             android:icon="@mipmap/account"
             android:title="Profile" />
+        <item
+            android:id="@+id/nav_chart"
+            android:icon="@mipmap/chart"
+            android:title="Chart" />
     </group>
 </menu>

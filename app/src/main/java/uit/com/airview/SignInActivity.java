@@ -90,6 +90,8 @@ public class SignInActivity extends BaseActivity {
                                 editor.putString("realmId", response.body().getRealmId());
                                 editor.putString("username", response.body().getUsername());
                                 editor.putLong("createdOn", response.body().getCreatedOn());
+                                editor.putString("firstname", response.body().getFirstName());
+                                editor.putString("lastname", response.body().getLastName());
                                 editor.putString("password", pwd);
                                 editor.putBoolean("isLoggedIn", true);
                                 editor.apply();

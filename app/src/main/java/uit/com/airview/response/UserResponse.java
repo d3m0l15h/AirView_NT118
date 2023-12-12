@@ -7,6 +7,10 @@ public class UserResponse {
     private String id;
     @SerializedName("realm")
     private String realm;
+    @SerializedName("firstName")
+    private String firstName;
+    @SerializedName("lastName")
+    private String lastName;
     @SerializedName("realmId")
     private String realmId;
     @SerializedName("email")
@@ -38,5 +42,13 @@ public class UserResponse {
 
     public long getCreatedOn() {
         return createdOn;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }

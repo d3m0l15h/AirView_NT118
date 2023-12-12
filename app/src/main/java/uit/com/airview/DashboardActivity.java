@@ -82,7 +82,11 @@ public class DashboardActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_profile) {
-                // Handle profile action
+                Intent intent = new Intent(DashboardActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_chart) {
+                Intent intent = new Intent(DashboardActivity.this, ChartActivity.class);
+                startActivity(intent);
             }
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
@@ -93,7 +97,7 @@ public class DashboardActivity extends AppCompatActivity {
             // Set the isLoggedIn flag to false
             sharedPreferences.edit().putBoolean("isLoggedIn", false).apply();
             // Clear all the data in the shared preferences
-            String[] keys = {"user_id", "email", "username", "password", "realmId", "token_type", "user_token", "admin_token"};
+            String[] keys = {"user_id", "email", "username", "password", "realmId", "token_type", "user_token", "admin_token", "firstname", "lastname"};
             for (String key : keys) {
                 sharedPreferences.edit().remove(key);
             }
@@ -202,133 +206,115 @@ public class DashboardActivity extends AppCompatActivity {
         dmy.setText(formattedDate.toUpperCase());
 
         runnable = () -> {
-            //Call to get asset2
-            Call<Asset2> call = apiInterface.getAsset2("Bearer " + sharedPreferences.getString("user_token", ""));
-            call.enqueue(new retrofit2.Callback<Asset2>() {
+            //Get weather
+            APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(DashboardActivity.this).create(APIInterface.class);
+            Call<OpenWeather> call1 = apiInterface2.getWeatherData(10.869778736885038,106.80280655508835, "metric");
+            call1.enqueue(new retrofit2.Callback<OpenWeather>() {
                 @SuppressLint("SetTextI18n")
                 @Override
-                public void onResponse(@NonNull Call<Asset2> call, @NonNull Response<Asset2> response) {
+                public void onResponse(@NonNull Call<OpenWeather> call, @NonNull Response<OpenWeather> response) {
                     if (response.isSuccessful()) {
-                        //Get asset2 response
-                        Asset2 asset2 = response.body();
-                        assert asset2 != null;
+                        //Get weather response
+                        OpenWeather openWeather = response.body();
+                        assert openWeather != null;
 
                         //Get weather
-                        APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(DashboardActivity.this).create(APIInterface.class);
-                        Call<OpenWeather> call1 = apiInterface2.getWeatherData(asset2.getAttributes().getLocation()[1], asset2.getAttributes().getLocation()[0], "metric");
-                        call1.enqueue(new retrofit2.Callback<OpenWeather>() {
+                        switch (openWeather.getWeatherDescription()) {
+                            case "scattered clouds":
+                                weatherImg.setImageResource(R.mipmap.clouds);
+                                weatherTv.setText(openWeather.getWeather());
+                                break;
+                            case "clear sky":
+                                if (hour >= 18 || hour < 6)
+                                    weatherImg.setImageResource(R.mipmap.night_clear_sky);
+                                else
+                                    weatherImg.setImageResource(R.mipmap.day_few_clouds);
+                                weatherTv.setText(openWeather.getWeather());
+                                break;
+                            case "shower rain":
+                                weatherImg.setImageResource(R.mipmap.shower_rain);
+                                weatherTv.setText(openWeather.getWeather());
+                                break;
+                            case "rain":
+                                if (hour >= 18 || hour < 6)
+                                    weatherImg.setImageResource(R.mipmap.night_rain);
+                                else
+                                    weatherImg.setImageResource(R.mipmap.day_rain);
+                                weatherTv.setText(openWeather.getWeather());
+                                break;
+                            case "few clouds":
+                                if (hour >= 18 || hour < 6)
+                                    weatherImg.setImageResource(R.mipmap.night_few_clouds);
+                                else
+                                    weatherImg.setImageResource(R.mipmap.day_few_clouds);
+                                weatherTv.setText(openWeather.getWeather());
+                                break;
+                            case "broken clouds":
+                                weatherImg.setImageResource(R.mipmap.clouds);
+                                weatherTv.setText(openWeather.getWeather());
+                                break;
+                            case "thunderstorm":
+                                weatherImg.setImageResource(R.mipmap.storm);
+                                weatherTv.setText(openWeather.getWeather());
+                                break;
+                        }
+
+                        // Get wind
+                        windTv.setText(openWeather.getWindSpeed() + " m/s");
+
+                        // Get sunrise
+                        sunriseTv.setText(Util.epochToFormattedTime(openWeather.getSunrise()));
+
+                        // Get sunset
+                        sunsetTv.setText(Util.epochToFormattedTime(openWeather.getSunset()));
+
+                        // Get temperature
+                        temperature.setText(openWeather.getTemp() + "°C");
+
+                        // Get humidity
+                        humidity.setText(openWeather.getHumidity() + "%");
+
+                        // Get air
+                        //Call to get asset
+                        Call<Asset> call2 = apiInterface.getAsset("Bearer " + sharedPreferences.getString("user_token", ""));
+                        call2.enqueue(new retrofit2.Callback<Asset>() {
                             @SuppressLint("SetTextI18n")
                             @Override
-                            public void onResponse(@NonNull Call<OpenWeather> call, @NonNull Response<OpenWeather> response) {
+                            public void onResponse(@NonNull Call<Asset> call, @NonNull Response<Asset> response) {
                                 if (response.isSuccessful()) {
-                                    //Get weather response
-                                    OpenWeather openWeather = response.body();
-                                    assert openWeather != null;
+                                    //Get asset response
+                                    Asset asset = response.body();
+                                    assert asset != null;
 
-                                    //Get weather
-                                    switch (openWeather.getWeatherDescription()) {
-                                        case "scattered clouds":
-                                            weatherImg.setImageResource(R.mipmap.clouds);
-                                            weatherTv.setText(openWeather.getWeather());
-                                            break;
-                                        case "clear sky":
-                                            if (hour >= 18 || hour < 6)
-                                                weatherImg.setImageResource(R.mipmap.night_clear_sky);
-                                            else
-                                                weatherImg.setImageResource(R.mipmap.day_few_clouds);
-                                            weatherTv.setText(openWeather.getWeather());
-                                            break;
-                                        case "shower rain":
-                                            weatherImg.setImageResource(R.mipmap.shower_rain);
-                                            weatherTv.setText(openWeather.getWeather());
-                                            break;
-                                        case "rain":
-                                            if(hour >= 18 || hour < 6)
-                                                weatherImg.setImageResource(R.mipmap.night_rain);
-                                            else
-                                                weatherImg.setImageResource(R.mipmap.day_rain);
-                                            weatherTv.setText(openWeather.getWeather());
-                                            break;
-                                        case "few clouds":
-                                            if(hour >= 18 || hour < 6)
-                                                weatherImg.setImageResource(R.mipmap.night_few_clouds);
-                                            else
-                                                weatherImg.setImageResource(R.mipmap.day_few_clouds);
-                                            weatherTv.setText(openWeather.getWeather());
-                                            break;
-                                        case "broken clouds":
-                                            weatherImg.setImageResource(R.mipmap.clouds);
-                                            weatherTv.setText(openWeather.getWeather());
-                                            break;
-                                        case "thunderstorm":
-                                            weatherImg.setImageResource(R.mipmap.storm);
-                                            weatherTv.setText(openWeather.getWeather());
-                                            break;
-                                    }
+                                    //Get air quality
+                                    air.setText(String.valueOf(asset.getAttributes().getCO2()));
 
-                                    // Get wind
-                                    windTv.setText(openWeather.getWindSpeed()+" m/s");
-
-                                    // Get sunrise
-                                    sunriseTv.setText(Util.epochToFormattedTime(openWeather.getSunrise()));
-
-                                    // Get sunset
-                                    sunsetTv.setText(Util.epochToFormattedTime(openWeather.getSunset()));
-
-                                    // Get temperature
-                                    temperature.setText(openWeather.getTemp() + "°C");
-
-                                    // Get humidity
-                                    humidity.setText(openWeather.getHumidity() + "%");
-
-                                    // Get air
-                                    //Call to get asset
-                                    Call<Asset> call2 = apiInterface.getAsset("Bearer " + sharedPreferences.getString("user_token", ""));
-                                    call2.enqueue(new retrofit2.Callback<Asset>() {
+                                    //call to get PM
+                                    Call<PM> call2 = apiInterface.getPM("Bearer " + sharedPreferences.getString("user_token", ""));
+                                    call2.enqueue(new retrofit2.Callback<PM>() {
                                         @SuppressLint("SetTextI18n")
                                         @Override
-                                        public void onResponse(@NonNull Call<Asset> call, @NonNull Response<Asset> response) {
+                                        public void onResponse(@NonNull Call<PM> call, @NonNull Response<PM> response) {
                                             if (response.isSuccessful()) {
-                                                //Get asset response
-                                                Asset asset = response.body();
-                                                assert asset != null;
+                                                //Get PM response
+                                                PM pm = response.body();
+                                                assert pm != null;
+                                                //Get PM2.5
+                                                double pm25 = pm.getAttributes().getPM25();
+                                                //Get PM10
+                                                double pm10 = pm.getAttributes().getPM10();
+                                                // Calculate the AQI based on the air quality data
+                                                double aqi = asset.getAttributes().calculateAQI(pm25, pm10);
 
-                                                //Get air quality
-                                                air.setText(String.valueOf(asset.getAttributes().getCO2()));
+                                                int progress = (int) ((aqi / 500.0) * 100); // Assuming the maximum AQI is 500
 
-                                                //call to get PM
-                                                Call<PM> call2 = apiInterface.getPM("Bearer " + sharedPreferences.getString("user_token", ""));
-                                                call2.enqueue(new retrofit2.Callback<PM>() {
-                                                    @SuppressLint("SetTextI18n")
-                                                    @Override
-                                                    public void onResponse(@NonNull Call<PM> call, @NonNull Response<PM> response) {
-                                                        if (response.isSuccessful()) {
-                                                            //Get PM response
-                                                            PM pm = response.body();
-                                                            assert pm != null;
-                                                            //Get PM2.5
-                                                            double pm25 = pm.getAttributes().getPM25();
-                                                            //Get PM10
-                                                            double pm10 = pm.getAttributes().getPM10();
-                                                            // Calculate the AQI based on the air quality data
-                                                            double aqi = asset.getAttributes().calculateAQI(pm25, pm10);
-
-                                                            int progress = (int) ((aqi / 500.0) * 100); // Assuming the maximum AQI is 500
-
-                                                            airQualityProgressBar.setProgress(progress);
-                                                            aqiTv.setText(String.valueOf((int) aqi));
-                                                        }
-                                                    }
-                                                    @Override
-                                                    public void onFailure(@NonNull Call<PM> call, @NonNull Throwable t) {
-
-                                                    }
-                                                });
+                                                airQualityProgressBar.setProgress(progress);
+                                                aqiTv.setText(String.valueOf((int) aqi));
                                             }
                                         }
 
                                         @Override
-                                        public void onFailure(@NonNull Call<Asset> call, @NonNull Throwable t) {
+                                        public void onFailure(@NonNull Call<PM> call, @NonNull Throwable t) {
 
                                         }
                                     });
@@ -336,7 +322,7 @@ public class DashboardActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
+                            public void onFailure(@NonNull Call<Asset> call, @NonNull Throwable t) {
 
                             }
                         });
@@ -344,13 +330,13 @@ public class DashboardActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<Asset2> call, @NonNull Throwable t) {
-                    System.out.println(R.string.networkErr);
+                public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
+
                 }
             });
 
             // Schedule the next update after 10 minute
-            handler.postDelayed(runnable, 60000*10);
+            handler.postDelayed(runnable, 60000 * 10);
         };
 
         // Temperature icon
@@ -439,6 +425,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         handler.post(runnable);
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (toggle.onOptionsItemSelected(item)) {
@@ -446,6 +433,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

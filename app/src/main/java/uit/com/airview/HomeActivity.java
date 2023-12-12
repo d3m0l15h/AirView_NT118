@@ -109,50 +109,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (Objects.equals(marker.getTitle(), "Asset1")) { // Asset 1
             temperature.setText("Temperature: 25°C");
         } else if (Objects.equals(marker.getTitle(), "Asset2")) {//Asset 2
-            Call<Asset2> call = apiInterface.getAsset2("Bearer " + sharedPreferences.getString("user_token",""));
-            call.enqueue(new retrofit2.Callback<Asset2>() {
-                @SuppressLint("SetTextI18n")
+            //Get weather
+            APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(HomeActivity.this).create(APIInterface.class);
+            Call<OpenWeather> call2 = apiInterface2.getWeatherData(10.869778736885038,106.80280655508835,"metric");
+            call2.enqueue(new retrofit2.Callback<OpenWeather>() {
+                @SuppressLint("DefaultLocale")
                 @Override
-                public void onResponse(@NonNull Call<Asset2> call, @NonNull Response<Asset2> response) {
+                public void onResponse(@NonNull Call<OpenWeather> call, @NonNull Response<OpenWeather> response) {
                     if (response.isSuccessful()) {
-                        //Get asset2 response
-                        Asset2 asset2 = response.body();
-                        assert asset2 != null;
+                        //Get weather response
+                        OpenWeather openWeather = response.body();
+                        assert openWeather != null;
 
-                        //Get coordination
-                        double[] cord = asset2.getAttributes().getLocation();
-
-                        //Get weather
-                        APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(HomeActivity.this).create(APIInterface.class);
-                        Call<OpenWeather> call2 = apiInterface2.getWeatherData(cord[1],cord[0],"metric");
-                        call2.enqueue(new retrofit2.Callback<OpenWeather>() {
-                            @SuppressLint("DefaultLocale")
-                            @Override
-                            public void onResponse(@NonNull Call<OpenWeather> call, @NonNull Response<OpenWeather> response) {
-                                if (response.isSuccessful()) {
-                                    //Get weather response
-                                    OpenWeather openWeather = response.body();
-                                    assert openWeather != null;
-
-                                    //Set weather
-                                    place.setText(openWeather.getCountry()+", "+openWeather.getCity());
-                                    temperature.setText("Temperature: "+ openWeather.getTemp()+"°C");
-                                    humidity.setText("Humidity: "+openWeather.getHumidity()+"%");
-                                    feelsLike.setText("Feels like: "+openWeather.getFeelsLike()+"°C");
-                                    pressure.setText("Pressure: "+openWeather.getPressure()+"hPa");
-                                    weather.setText("Weather: "+openWeather.getWeatherDescription());
-                                }
-                            }
-                            @Override
-                            public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
-                                Log.e("OpenWeatherMap", Objects.requireNonNull(t.getMessage()));
-                            }
-                        });
+                        //Set weather
+                        place.setText(openWeather.getCountry()+", "+openWeather.getCity());
+                        temperature.setText("Temperature: "+ openWeather.getTemp()+"°C");
+                        humidity.setText("Humidity: "+openWeather.getHumidity()+"%");
+                        feelsLike.setText("Feels like: "+openWeather.getFeelsLike()+"°C");
+                        pressure.setText("Pressure: "+openWeather.getPressure()+"hPa");
+                        weather.setText("Weather: "+openWeather.getWeatherDescription());
                     }
                 }
                 @Override
-                public void onFailure(@NonNull Call<Asset2> call, @NonNull Throwable t) {
-
+                public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
+                    Log.e("OpenWeatherMap", Objects.requireNonNull(t.getMessage()));
                 }
             });
         }

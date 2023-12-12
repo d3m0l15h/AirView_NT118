@@ -21,9 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.DatabaseConfig;
 
+import java.util.Random;
+
 import retrofit2.Call;
 import uit.com.airview.model.AirQualityReading;
 import uit.com.airview.model.Asset.Asset;
+import uit.com.airview.model.OpenWeather.OpenWeather;
 import uit.com.airview.model.PM.PM;
 import uit.com.airview.response.LoginResponse;
 import uit.com.airview.util.APIClient;
@@ -61,38 +64,38 @@ public class FetchDataService extends Service {
 
                         // Calculate AQI
                         double aqi = asset.getAttributes().calculateAQI(pm.getAttributes().getPM25(), pm.getAttributes().getPM10());
-                        Log.d("Debug", "AQI: " + aqi);
 
-                        // Save the data to Firebase
-//                String userId = sharedPreferences.getString("user_id", null);
-//                assert userId != null;
-//                AirQualityReading reading = new AirQualityReading(aqi, System.currentTimeMillis());
-//                ref.child(userId).push().setValue(reading);
+                        //Get weather
+                        APIInterface apiInterface1 = APIClient.getOpenWeatherMapClient(FetchDataService.this).create(APIInterface.class);
+                        Call<OpenWeather> call3 = apiInterface1.getWeatherData(10.869778736885038, 106.80280655508835, "metric");
+                        call3.enqueue(new retrofit2.Callback<OpenWeather>() {
+                            @Override
+                            public void onResponse(@NonNull Call<OpenWeather> call, @NonNull retrofit2.Response<OpenWeather> response) {
+                                assert response.body() != null;
+                                OpenWeather openWeather = response.body();
 
-                        //Achieve data
-//                ref.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        // This method is called once with the initial value and again
-//                        // whenever data at this location is updated.
-//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                            AirQualityReading reading = snapshot.getValue(AirQualityReading.class);
-//                            if (reading != null) {
-//                                Log.d("Debug", "AQI: " + reading.getAqi());
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        // Failed to read value
-//                        Log.w("Debug", "Failed to read value.", error.toException());
-//                    }
-//                });
+                                //Demo data
+                                Random rand = new Random();
+                                double aqiDemo = 100 + rand.nextDouble() * (300 - 200);
+                                double tempDemo = 20 + rand.nextDouble() * (35 - 20);
+                                double humidDemo = 30 + rand.nextDouble() * (90 - 30);
 
-                        // Send notification
-                        sendNotification("AQI: " + String.format("%.3f",aqi) + " - " + uit.com.airview.util.Util.getAirQualityLevel(aqi), FetchDataService.this);
+                                // Save the data to Firebase
+                                String userId = sharedPreferences.getString("user_id", null);
+                                assert userId != null;
+//                                AirQualityReading reading = new AirQualityReading(aqi, openWeather.getTemp(), openWeather.getHumidity(), System.currentTimeMillis());
+                                AirQualityReading reading = new AirQualityReading(aqiDemo, tempDemo, humidDemo, System.currentTimeMillis());
+                                ref.child(userId).push().setValue(reading);
 
+                                // Send notification
+                                sendNotification(String.format("%.3f", aqi), String.valueOf(openWeather.getTemp()), String.valueOf(openWeather.getHumidity()), FetchDataService.this);
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
+
+                            }
+                        });
                     }
                     @Override
                     public void onFailure(@NonNull Call<PM> call, @NonNull Throwable t) {
@@ -100,7 +103,6 @@ public class FetchDataService extends Service {
                     }
                 });
             }
-
             @Override
             public void onFailure(@NonNull Call<Asset> call, @NonNull Throwable t) {
 
@@ -116,16 +118,18 @@ public class FetchDataService extends Service {
         return null;
     }
 
-    private void sendNotification(String content, Context context) {
+    private void sendNotification(String aqi, String temperature, String humidity, Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationChannel channel = new NotificationChannel("default", "Default", NotificationManager.IMPORTANCE_HIGH);
         notificationManager.createNotificationChannel(channel);
 
+        String content = "AQI: " + aqi + " - " + "Temperature: " + temperature + "°C" + " - " + "Humidity: " + humidity + "%";
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "default")
                 .setContentTitle("Data fetched")
                 .setContentText(content)
-                .setSmallIcon(R.mipmap.ic_launcher) // replace with your own icon
+                .setSmallIcon(R.mipmap.air) // replace with your own icon
                 .setPriority(NotificationCompat.PRIORITY_HIGH) // for Android versions lower than 8.0
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC); // show on lock screen
 
