@@ -1,18 +1,18 @@
-package uit.com.airview.model.Asset;
+package uit.com.airview.model.Asset2;
 
 import com.google.gson.annotations.SerializedName;
 
-public class rainfall {
+public class Temperature {
     @SerializedName("value")
     private double value;
     @SerializedName("timestamp")
     private long timestamp;
 
-    public double getValue() {
-        return value;
-    }
-
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public double getValue() {
+        return value;
     }
 }

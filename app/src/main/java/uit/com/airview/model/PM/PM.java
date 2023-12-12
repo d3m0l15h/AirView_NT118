@@ -1,8 +1,8 @@
-package uit.com.airview.model.Asset2;
+package uit.com.airview.model.PM;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Asset2 {
+public class PM {
     @SerializedName("id")
     private String id;
     @SerializedName("createdOn")
@@ -12,7 +12,7 @@ public class Asset2 {
     @SerializedName("type")
     private String type;
     @SerializedName("attributes")
-    private uit.com.airview.model.Asset2.Attributes attributes;
+    private Attributes attributes;
 
     public String getName() {
         return name;

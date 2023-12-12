@@ -1,5 +1,4 @@
-package uit.com.airview.model.Asset2;
-
+package uit.com.airview.model.OpenWeather;
 
 import com.google.gson.annotations.SerializedName;
 

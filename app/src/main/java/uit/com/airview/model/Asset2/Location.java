@@ -1,18 +1,18 @@
-package uit.com.airview.model.Asset;
+package uit.com.airview.model.Asset2;
 
 import com.google.gson.annotations.SerializedName;
 
-public class sunIrradiance {
+public class Location {
     @SerializedName("value")
-    private double value;
+    private Coordinates value;
     @SerializedName("timestamp")
     private long timestamp;
 
-    public double getValue() {
-        return value;
-    }
-
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public Coordinates getValue() {
+        return value;
     }
 }

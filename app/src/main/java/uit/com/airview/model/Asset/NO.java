@@ -2,7 +2,7 @@ package uit.com.airview.model.Asset;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AQI_Predict {
+public class NO {
     @SerializedName("value")
     private double value;
     @SerializedName("timestamp")

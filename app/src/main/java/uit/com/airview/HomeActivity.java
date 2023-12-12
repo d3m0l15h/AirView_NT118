@@ -5,7 +5,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,16 +22,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import org.w3c.dom.Text;
-
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Response;
 import uit.com.airview.model.Asset2.Asset2;
-import uit.com.airview.model.Asset2.Coord;
+import uit.com.airview.model.Asset2.Coordinates;
+import uit.com.airview.model.OpenWeather.OpenWeather;
 import uit.com.airview.util.APIClient;
 import uit.com.airview.util.APIInterface;
+import uit.com.airview.util.Util;
 
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -55,31 +54,31 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         sharedPreferences.edit().putString("token_type", "user").apply();
 
         gmap = googleMap;
-        LatLng asset1 = new LatLng( 10.869778736885038, 106.80280655508835);
+        LatLng asset1 = new LatLng( 10, 106);
         gmap.addMarker(new MarkerOptions().position(asset1).title("Asset1"));
 
         //Call asset api
         APIInterface apiInterface = APIClient.getClient(this).create(APIInterface.class);
-        Call<Asset2> call = apiInterface.getAsset2("4EqQeQ0L4YNWNNTzvTOqjy","Bearer " + sharedPreferences.getString("user_token",""));
+        Call<Asset2> call = apiInterface.getAsset2("Bearer " + sharedPreferences.getString("user_token",""));
         call.enqueue(new retrofit2.Callback<Asset2>() {
             @Override
             public void onResponse(@NonNull Call<Asset2> call, @NonNull Response<Asset2> response) {
                 if (response.isSuccessful()) {
                     //Get asset2 response
-                    Asset2 asset = response.body();
-                    assert asset != null;
+                    Asset2 asset2 = response.body();
+                    assert asset2 != null;
+
                     //Get coordination
-                    Coord coord = asset.getAttributes().getData().getValue().getCoord();
+                    double[] cord = asset2.getAttributes().getLocation();
+
                     //Add marker
-                    LatLng asset2 = new LatLng(coord.getLat(), coord.getLon());
-                    gmap.addMarker(new MarkerOptions().position(asset2).title("Asset2"));
-                    gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(asset2, 19.0f));
+                    LatLng asset2Location = new LatLng(cord[1], cord[0]);
+                    gmap.addMarker(new MarkerOptions().position(asset2Location).title("Asset2"));
+                    gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(asset2Location, 19.0f));
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<Asset2> call, @NonNull Throwable t) {
-                System.out.println("Failed");
             }
         });
         gmap.setOnMarkerClickListener(this);
@@ -93,7 +92,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
 
         //Inflate the layout for the bottom sheet
-        View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+        @SuppressLint("InflateParams") View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
 
         // Get references to the TextViews
         TextView tvMarkerTitle = bottomSheetView.findViewById(R.id.tv_marker_title);
@@ -107,38 +106,63 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Set the text of the TextViews based on the clicked marker
         tvMarkerTitle.setText(marker.getTitle());
-        if (Objects.equals(marker.getTitle(), "Asset1")) {
+        if (Objects.equals(marker.getTitle(), "Asset1")) { // Asset 1
             temperature.setText("Temperature: 25°C");
-        } else if (Objects.equals(marker.getTitle(), "Asset2")) {
-            Call<Asset2> call = apiInterface.getAsset2("4EqQeQ0L4YNWNNTzvTOqjy","Bearer " + sharedPreferences.getString("user_token",""));
+        } else if (Objects.equals(marker.getTitle(), "Asset2")) {//Asset 2
+            Call<Asset2> call = apiInterface.getAsset2("Bearer " + sharedPreferences.getString("user_token",""));
             call.enqueue(new retrofit2.Callback<Asset2>() {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onResponse(@NonNull Call<Asset2> call, @NonNull Response<Asset2> response) {
                     if (response.isSuccessful()) {
                         //Get asset2 response
-                        Asset2 asset = response.body();
-                        assert asset != null;
-                        place.setText(asset.getAttributes().getData().getValue().getSys().getCountry()+", "+asset.getAttributes().getData().getValue().getName());
-                        temperature.setText("Temperature: "+asset.getAttributes().getData().getValue().getMain().getTemp()+"°C");
-                        humidity.setText("Humidity: "+asset.getAttributes().getData().getValue().getMain().getHumidity()+"%");
-                        feelsLike.setText("Feels like: "+asset.getAttributes().getData().getValue().getMain().getFeels_like()+"°C");
-                        pressure.setText("Pressure: "+asset.getAttributes().getData().getValue().getMain().getPressure()+"hPa");
-                        weather.setText("Weather: "+asset.getAttributes().getData().getValue().getWeather()[0].getDescription());
+                        Asset2 asset2 = response.body();
+                        assert asset2 != null;
+
+                        //Get coordination
+                        double[] cord = asset2.getAttributes().getLocation();
+
+                        //Get weather
+                        APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(HomeActivity.this).create(APIInterface.class);
+                        Call<OpenWeather> call2 = apiInterface2.getWeatherData(cord[1],cord[0],"metric");
+                        call2.enqueue(new retrofit2.Callback<OpenWeather>() {
+                            @SuppressLint("DefaultLocale")
+                            @Override
+                            public void onResponse(@NonNull Call<OpenWeather> call, @NonNull Response<OpenWeather> response) {
+                                if (response.isSuccessful()) {
+                                    //Get weather response
+                                    OpenWeather openWeather = response.body();
+                                    assert openWeather != null;
+
+                                    //Set weather
+                                    place.setText(openWeather.getCountry()+", "+openWeather.getCity());
+                                    temperature.setText("Temperature: "+ openWeather.getTemp()+"°C");
+                                    humidity.setText("Humidity: "+openWeather.getHumidity()+"%");
+                                    feelsLike.setText("Feels like: "+openWeather.getFeelsLike()+"°C");
+                                    pressure.setText("Pressure: "+openWeather.getPressure()+"hPa");
+                                    weather.setText("Weather: "+openWeather.getWeatherDescription());
+                                }
+                            }
+                            @Override
+                            public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
+                                Log.e("OpenWeatherMap", Objects.requireNonNull(t.getMessage()));
+                            }
+                        });
                     }
                 }
-
                 @Override
                 public void onFailure(@NonNull Call<Asset2> call, @NonNull Throwable t) {
-                    System.out.println("Failed");
+
                 }
             });
         }
+
         //Info btn click
         infoBtn.setOnClickListener(view->{
             Intent intent = new Intent(HomeActivity.this, DashboardActivity.class);
             startActivity(intent);
         });
+
         //Dialog set content view
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
@@ -176,7 +200,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }

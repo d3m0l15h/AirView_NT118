@@ -39,7 +39,7 @@
         android:layout_below="@id/place"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/imageView"
-        android:text="Temperature: 25.34°C" />
+        android:text="Temperature: xx.xx°C" />
 
     <TextView
         android:id="@+id/humidity"
@@ -49,7 +49,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
         android:layout_toEndOf="@id/imageView6"
-        android:text="Humidity: 89%" />
+        android:text="Humidity: xx%" />
 
     <TextView
         android:id="@+id/weather"
@@ -62,7 +62,7 @@
         android:layout_marginBottom="15dp"
         android:layout_toEndOf="@id/imageView8"
 
-        android:text="Weather: Clouds" />
+        android:text="Weather: " />
 
     <TextView
         android:id="@+id/feels_like"
@@ -73,7 +73,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/imageView5"
-        android:text="Feels like: 33.14°C" />
+        android:text="Feels like: xx.xx°C" />
 
     <TextView
         android:id="@+id/pressure"
@@ -84,7 +84,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="25dp"
         android:layout_toEndOf="@id/imageView5"
-        android:text="Pressure: 1013"
+        android:text="Pressure: xxxx"
         tools:layout_toEndOf="@id/imageView7" />
 
     <Button

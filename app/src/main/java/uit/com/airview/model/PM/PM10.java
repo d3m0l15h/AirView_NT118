@@ -1,8 +1,8 @@
-package uit.com.airview.model.Asset;
+package uit.com.airview.model.PM;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PM25 {
+public class PM10 {
     @SerializedName("value")
     private double value;
     @SerializedName("timestamp")
