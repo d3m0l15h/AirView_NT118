@@ -8,10 +8,7 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
     <application
-        android:name=".MainApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -49,6 +46,12 @@
         <activity
             android:name=".HomeActivity"
             android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".ChartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".DashboardActivity"
