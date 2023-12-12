@@ -162,6 +162,7 @@ public class DashboardActivity extends AppCompatActivity {
                     //Get asset2 response
                     Asset2 asset = response.body();
                     assert asset != null;
+
                     //Get weather
                     Weather weather = asset.getAttributes().getData().getValue().getWeather()[0];
                     switch (weather.getMain()) {
@@ -200,6 +201,8 @@ public class DashboardActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 //Get asset response
                                 Asset asset1 = response.body();
+                                Log.d("AssetId", String.valueOf(asset1.getId()));
+
                                 assert asset1 != null;
                                 //Get air quality
                                 air.setText(String.valueOf(asset1.getAttributes().getCO2().getValue()));
@@ -280,12 +283,12 @@ public class DashboardActivity extends AppCompatActivity {
                 String itemName = getResources().getResourceEntryName(menuItem.getItemId());
                 switch (itemName) {
                     case "option_1":
-                        // Do something when menu_item_one is selected
-
+                        Intent intent1 = new Intent(v.getContext(), ProfileActivity.class);
+                        startActivity(intent1);
                         break;
                     case "option_2":
-                        Intent intent = new Intent(v.getContext(), ChartActivity.class);
-                        startActivity(intent);
+                        Intent intent2 = new Intent(v.getContext(), ChartActivity.class);
+                        startActivity(intent2);
                         break;
                     case "option_3":
                         // Do something when menu_item_two is selected
