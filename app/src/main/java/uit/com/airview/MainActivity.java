@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
         editor.apply();
 
         //Stayed logged in
-        if(sharedPreferences.getBoolean("isLoggedIn", true)) {
+        if(sharedPreferences.getBoolean("isLoggedIn", false)) {
             // Redirect the user to the login activity
             Intent intentLog = new Intent(this, HomeActivity.class);
             startActivity(intentLog);
