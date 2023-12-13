@@ -24,7 +24,11 @@ public class SettingActivity extends AppCompatActivity {
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
 
         //
-        String[] attrItems = {"Standard(temp: °K, wind: m/s)", "Metric(temp: °C, wind:m/s)", "Imperial(temp: °F, wind: m/h)"};
+        String[] attrItems = {
+                "Standard("+getString(R.string.temp)+": °K, "+getString(R.string.windSpeed)+": m/s)",
+                "Metric("+getString(R.string.temp)+": °C, "+getString(R.string.windSpeed)+": m/s)",
+                "Imperial("+getString(R.string.temp)+": °F, "+getString(R.string.windSpeed)+": m/h)"
+        };
         EditText temp = findViewById(R.id.temp);
         EditText humid = findViewById(R.id.humid);
         EditText aqi = findViewById(R.id.aqi);
@@ -59,7 +63,7 @@ public class SettingActivity extends AppCompatActivity {
             editor.putString("aqi", aqi.getText().toString());
             editor.putInt("unit", attrTextField.getText().toString().equals(attrItems[0]) ? 0 : attrTextField.getText().toString().equals(attrItems[1]) ? 1 : 2);
             editor.apply();
-            Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.save, Toast.LENGTH_SHORT).show();
         });
 
 

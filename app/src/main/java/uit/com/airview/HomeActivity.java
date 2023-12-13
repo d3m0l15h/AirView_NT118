@@ -123,11 +123,33 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         //Set weather
                         place.setText(openWeather.getCountry()+", "+openWeather.getCity());
-                        temperature.setText("Temperature: "+ openWeather.getTemp()+"°C");
-                        humidity.setText("Humidity: "+openWeather.getHumidity()+"%");
-                        feelsLike.setText("Feels like: "+openWeather.getFeelsLike()+"°C");
-                        pressure.setText("Pressure: "+openWeather.getPressure()+"hPa");
-                        weather.setText("Weather: "+openWeather.getWeatherDescription());
+                        temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp()+"°C");
+                        humidity.setText(getString(R.string.humid)+": "+openWeather.getHumidity()+"%");
+                        feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike()+"°C");
+                        pressure.setText(getString(R.string.pressure)+": "+openWeather.getPressure()+"hPa");
+                        switch (openWeather.getWeatherDescription()){
+                            case "clear sky":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.clearSky)+" ☀️");
+                                break;
+                            case "few clouds":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.fewClouds)+" 🌤");
+                                break;
+                            case "scattered clouds":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.scatterClouds)+" ⛅️");
+                                break;
+                            case "broken clouds":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.brokenClouds)+" 🌥");
+                                break;
+                            case "shower rain":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.showerRain)+" 🌧");
+                                break;
+                            case "rain":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.rain)+" 🌧");
+                                break;
+                            case "thunderstorm":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.thunderstorm)+" ⛈");
+                                break;
+                        }
                     }
                 }
                 @Override

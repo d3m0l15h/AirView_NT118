@@ -3,14 +3,14 @@
         <item
             android:id="@+id/nav_profile"
             android:icon="@mipmap/account"
-            android:title="Profile" />
+            android:title="@string/profile" />
         <item
             android:id="@+id/nav_chart"
             android:icon="@mipmap/chart"
-            android:title="Chart" />
+            android:title="@string/chart" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@mipmap/settings"
-            android:title="Settings" />
+            android:title="@string/settings" />
     </group>
 </menu>

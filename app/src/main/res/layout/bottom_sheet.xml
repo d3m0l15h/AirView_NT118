@@ -55,7 +55,7 @@
         android:id="@+id/weather"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/humidity"
+        android:layout_below="@id/pressure"
         android:layout_marginStart="5dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
@@ -66,8 +66,8 @@
 
     <TextView
         android:id="@+id/feels_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="148dp"
+        android:layout_height="20dp"
         android:layout_below="@id/place"
 
         android:layout_marginStart="5dp"
@@ -83,17 +83,16 @@
 
         android:layout_marginStart="5dp"
         android:layout_marginTop="25dp"
-        android:layout_toEndOf="@id/imageView5"
-        android:text="Pressure: xxxx"
-        tools:layout_toEndOf="@id/imageView7" />
+        android:layout_toEndOf="@id/imageView7"
+        android:text="Pressure: xxxx" />
 
     <Button
         android:id="@+id/infoBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#6750A3"
         android:layout_centerHorizontal="true"
-        android:text="More info"
+        android:background="#6750A3"
+        android:text="Dashboard"
         app:cornerRadius="1dp" />
 
     <ImageView
@@ -134,8 +133,8 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_width="35dp"
+        android:layout_height="41dp"
         android:layout_below="@id/imageView5"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"

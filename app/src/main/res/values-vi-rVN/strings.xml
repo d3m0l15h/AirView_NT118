@@ -23,5 +23,36 @@
     <string name="userErr">Tên đăng nhập đã tồn tại</string>
     <string name="signupSucc">Đăng ký thành công</string>
     <string name="welcome">"Xin chào, "</string>
+    <string name="profile">Thông tin</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="settings">Cài đặt</string>
+    <string name="chart">BIểu đồ</string>
+    <string name="temp">Nhiệt độ</string>
+    <string name="humid">Độ ẩm</string>
+    <string name="pressure">Áp suất</string>
+    <string name="weather">Thời tiết</string>
+    <string name="feelsLike">Cảm thấy</string>
+    <string name="notifiSetting">Cài đặt thông báo</string>
+    <string name="selectSettingTv">Chọn đơn vị</string>
+    <string name="save">Lưu</string>
+    <string name="units">Đơn vị</string>
+    <string name="windSpeed">Gió</string>
+    <string name="clearSky">Trời quang</string>
+    <string name="fewClouds">Mây thưa</string>
+    <string name="scatterClouds">Mây rải rác</string>
+    <string name="brokenClouds">Mây tan</string>
+    <string name="showerRain">Mưa nhỏ</string>
+    <string name="rain">Mưa</string>
+    <string name="thunderstorm">Dông</string>
+    <string name="clear">Trời quang</string>
+    <string name="clouds">Có mây</string>
+    <string name="firstName">Tên:</string>
+    <string name="lastName">Họ:</string>
+    <string name="day">Ngày</string>
+    <string name="month">Tháng</string>
+    <string name="year">Năm</string>
+    <string name="show">Hiển thị</string>
+    <string name="selectAttr">Chọn giá trị</string>
+    <string name="timeFrame">Mức thời gian</string>
 </resources>
 

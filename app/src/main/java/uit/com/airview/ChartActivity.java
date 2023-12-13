@@ -67,8 +67,8 @@ public class ChartActivity extends AppCompatActivity {
         dateTextInput = findViewById(R.id.dateTextInput);
         Button showButton = findViewById(R.id.showButton);
 
-        String[] attrItems = {"Temperature", "Humidity", "AQI"};
-        String[] tfItems = {"Day", "Month", "Year"};
+        String[] attrItems = {getString(R.string.temp), getString(R.string.humid), "AQI"};
+        String[] tfItems = {getString(R.string.day), getString(R.string.month), getString(R.string.year)};
         @SuppressLint("WrongViewCast")
         MaterialAutoCompleteTextView attrTextField = findViewById(R.id.attributeMenu);
         @SuppressLint("WrongViewCast")
@@ -153,9 +153,9 @@ public class ChartActivity extends AppCompatActivity {
         for (int i = 0; i < readings.size(); i++) {
             AirQualityReading reading = readings.get(i);
             double value;
-            if ("Temperature".equals(attribute)) {
+            if (getString(R.string.temp).equals(attribute)) {
                 value = reading.getTemperature();
-            } else if ("Humidity".equals(attribute)) {
+            } else if (getString(R.string.humid).equals(attribute)) {
                 value = reading.getHumidity();
             } else { // Assume CO2 if not temperature or humidity
                 value = reading.getAqi();
@@ -166,9 +166,9 @@ public class ChartActivity extends AppCompatActivity {
         LineDataSet dataSet = new LineDataSet(entries, attribute);
 
         // Customize the appearance of the line
-        if("Temperature".equals(attribute))
+        if(getString(R.string.temp).equals(attribute))
             dataSet.setColor(Color.RED);
-        else if("Humidity".equals(attribute))
+        else if(getString(R.string.humid).equals(attribute))
             dataSet.setColor(Color.BLUE);
         else if("AQI".equals(attribute))
             dataSet.setColor(Color.GRAY);
@@ -202,11 +202,11 @@ public class ChartActivity extends AppCompatActivity {
             int readingMonth = cal.get(Calendar.MONTH);
             int readingDay = cal.get(Calendar.DAY_OF_MONTH);
 
-            if ("Year".equals(selectedTimeFrame) && readingYear == selectedYear) {
+            if (getString(R.string.year).equals(selectedTimeFrame) && readingYear == selectedYear) {
                 filteredReadings.add(reading);
-            } else if ("Month".equals(selectedTimeFrame) && readingYear == selectedYear && readingMonth == selectedMonth) {
+            } else if (getString(R.string.month).equals(selectedTimeFrame) && readingYear == selectedYear && readingMonth == selectedMonth) {
                 filteredReadings.add(reading);
-            } else if ("Day".equals(selectedTimeFrame) && readingYear == selectedYear && readingMonth == selectedMonth && readingDay == selectedDay) {
+            } else if (getString(R.string.day).equals(selectedTimeFrame) && readingYear == selectedYear && readingMonth == selectedMonth && readingDay == selectedDay) {
                 filteredReadings.add(reading);
             }
         }
