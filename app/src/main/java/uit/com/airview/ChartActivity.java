@@ -212,5 +212,12 @@ public class ChartActivity extends AppCompatActivity {
         }
         return filteredReadings;
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
 

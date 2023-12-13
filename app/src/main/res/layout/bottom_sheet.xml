@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv_marker_title"
-        android:layout_width="146dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/infoBtn"
         android:layout_marginStart="15dp"
@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/place"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_marker_title"
         android:layout_marginStart="15dp"
@@ -66,8 +66,8 @@
 
     <TextView
         android:id="@+id/feels_like"
-        android:layout_width="148dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/place"
 
         android:layout_marginStart="5dp"
@@ -77,14 +77,13 @@
 
     <TextView
         android:id="@+id/pressure"
-        android:layout_width="142dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/feels_like"
 
-        android:layout_marginStart="5dp"
         android:layout_marginTop="25dp"
         android:layout_toEndOf="@id/imageView7"
-        android:text="Pressure: xxxx" />
+        android:text="Pressure: xxxx.0hpa" />
 
     <Button
         android:id="@+id/infoBtn"
@@ -116,9 +115,9 @@
         android:id="@+id/imageView8"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:layout_below="@id/imageView6"
+        android:layout_below="@id/pressure"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"
         app:srcCompat="@mipmap/weather" />
 
@@ -135,9 +134,9 @@
         android:id="@+id/imageView7"
         android:layout_width="35dp"
         android:layout_height="41dp"
-        android:layout_below="@id/imageView5"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_below="@id/feels_like"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/humidity"
         app:srcCompat="@mipmap/pressure" />
 </RelativeLayout>

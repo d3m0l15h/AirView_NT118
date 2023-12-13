@@ -391,7 +391,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:backgroundTint="#00FFFFFF"
-            android:text="Sign Out"
+            android:text="@string/logout"
             android:textColor="@color/black"
             app:icon="@mipmap/logout"
             app:iconTint="#000000" />

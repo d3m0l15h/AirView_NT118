@@ -17,6 +17,10 @@ public class Attributes {
     private NO2 NO2;
     @SerializedName("SO2")
     private SO2 SO2;
+    @SerializedName("PM10")
+    private PM10 PM10;
+    @SerializedName("PM25")
+    private PM25 PM25;
 
     public double getSO2() {
         return SO2.getValue();
@@ -42,7 +46,15 @@ public class Attributes {
         return CO2.getValue();
     }
 
-    public double calculateAQI(double pm25, double pm10) {
+    public double getPM10() {
+        return PM10.getValue();
+    }
+
+    public double getPM25() {
+        return PM25.getValue();
+    }
+
+    public double calculateAQI() {
 
         double[] pm25AQI = {0, 12, 35.4, 55.4, 150.4, 250.4, 350.4, 500.4};
         double[] pm10AQI = {0, 54, 154, 254, 354, 424, 504, 604};
@@ -59,15 +71,15 @@ public class Attributes {
         double so2AQIValue = 0;
 
         for (int i = 0; i < pm25AQI.length; i++) {
-            if (pm25 >= pm25AQI[i]) {
-                pm25AQIValue = AQI[i] + (AQI[i + 1] - AQI[i]) * (pm25 - pm25AQI[i]) / (pm25AQI[i + 1] - pm25AQI[i]);
+            if (getPM25() >= pm25AQI[i]) {
+                pm25AQIValue = AQI[i] + (AQI[i + 1] - AQI[i]) * (getPM25() - pm25AQI[i]) / (pm25AQI[i + 1] - pm25AQI[i]);
                 break;
             }
         }
 
         for (int i = 0; i < pm10AQI.length; i++) {
-            if (pm10 >= pm10AQI[i]) {
-                pm10AQIValue = AQI[i] + (AQI[i + 1] - AQI[i]) * (pm10 - pm10AQI[i]) / (pm10AQI[i + 1] - pm10AQI[i]);
+            if (getPM10() >= pm10AQI[i]) {
+                pm10AQIValue = AQI[i] + (AQI[i + 1] - AQI[i]) * (getPM10() - pm10AQI[i]) / (pm10AQI[i + 1] - pm10AQI[i]);
                 break;
             }
         }

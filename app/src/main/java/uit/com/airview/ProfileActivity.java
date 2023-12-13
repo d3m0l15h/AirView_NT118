@@ -35,4 +35,11 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

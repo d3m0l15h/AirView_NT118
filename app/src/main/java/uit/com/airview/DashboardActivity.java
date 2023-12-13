@@ -83,16 +83,16 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_profile) {
                 Intent intent = new Intent(DashboardActivity.this, ProfileActivity.class);
-                finish();
                 startActivity(intent);
+                finish();
             } else if (id == R.id.nav_chart) {
                 Intent intent = new Intent(DashboardActivity.this, ChartActivity.class);
-                finish();
                 startActivity(intent);
+                finish();
             } else if (id == R.id.nav_settings) {
                 Intent intent = new Intent(DashboardActivity.this, SettingActivity.class);
-                finish();
                 startActivity(intent);
+                finish();
             }
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
@@ -207,25 +207,25 @@ public class DashboardActivity extends AppCompatActivity {
         String weekDay = dayFormat.format(calendar.getTime());
         switch (weekDay) {
             case "Monday":
-                weekDay = "Thứ Hai";
+                weekDay = getString(R.string.monday);
                 break;
             case "Tuesday":
-                weekDay = "Thứ Ba";
+                weekDay = getString(R.string.tuesday);
                 break;
             case "Wednesday":
-                weekDay = "Thứ Tư";
+                weekDay = getString(R.string.wednesday);
                 break;
             case "Thursday":
-                weekDay = "Thứ Năm";
+                weekDay = getString(R.string.thursday);
                 break;
             case "Friday":
-                weekDay = "Thứ Sáu";
+                weekDay = getString(R.string.friday);
                 break;
             case "Saturday":
-                weekDay = "Thứ Bảy";
+                weekDay = getString(R.string.saturday);
                 break;
             case "Sunday":
-                weekDay = "Chủ Nhật";
+                weekDay = getString(R.string.sunday);
                 break;
         }
         date.setText(weekDay.toUpperCase());
@@ -237,40 +237,40 @@ public class DashboardActivity extends AppCompatActivity {
 
         switch (month) {
             case "January":
-                month = "Tháng 1,"; // replace with Vietnamese month
+                month = getString(R.string.january); // replace with Vietnamese month
                 break;
             case "February":
-                month = "Tháng 2,";
+                month = getString(R.string.february);
                 break;
             case "March":
-                month = "Tháng 3,";
+                month = getString(R.string.march);
                 break;
             case "April":
-                month = "Tháng 4,";
+                month = getString(R.string.april);
                 break;
             case "May":
-                month = "Tháng 5,";
+                month = getString(R.string.may);
                 break;
             case "June":
-                month = "Tháng 6,";
+                month = getString(R.string.june);
                 break;
             case "July":
-                month = "Tháng 7,";
+                month = getString(R.string.july);
                 break;
             case "August":
-                month = "Tháng 8,";
+                month = getString(R.string.august);
                 break;
             case "September":
-                month = "Tháng 9,";
+                month = getString(R.string.september);
                 break;
             case "October":
-                month = "Tháng 10,";
+                month = getString(R.string.october);
                 break;
             case "November":
-                month = "Tháng 11,";
+                month = getString(R.string.november);
                 break;
             case "December":
-                month = "Tháng 12,";
+                month = getString(R.string.december);
                 break;
         }
         // Replace the month in the original date string
@@ -376,35 +376,13 @@ public class DashboardActivity extends AppCompatActivity {
                                     //Get air quality
                                     air.setText(String.valueOf(asset.getAttributes().getCO2()));
 
-                                    //call to get PM
-                                    Call<PM> call2 = apiInterface.getPM("Bearer " + sharedPreferences.getString("user_token", ""));
-                                    call2.enqueue(new retrofit2.Callback<PM>() {
-                                        @SuppressLint("SetTextI18n")
-                                        @Override
-                                        public void onResponse(@NonNull Call<PM> call, @NonNull Response<PM> response) {
-                                            if (response.isSuccessful()) {
-                                                //Get PM response
-                                                PM pm = response.body();
-                                                assert pm != null;
-                                                //Get PM2.5
-                                                double pm25 = pm.getAttributes().getPM25();
-                                                //Get PM10
-                                                double pm10 = pm.getAttributes().getPM10();
-                                                // Calculate the AQI based on the air quality data
-                                                double aqi = asset.getAttributes().calculateAQI(pm25, pm10);
+                                    // Calculate the AQI based on the air quality data
+                                    double aqi = asset.getAttributes().calculateAQI();
 
-                                                int progress = (int) ((aqi / 500.0) * 100); // Assuming the maximum AQI is 500
+                                    int progress = (int) ((aqi / 500.0) * 100); // Assuming the maximum AQI is 500
 
-                                                airQualityProgressBar.setProgress(progress);
-                                                aqiTv.setText(String.valueOf((int) aqi));
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(@NonNull Call<PM> call, @NonNull Throwable t) {
-
-                                        }
-                                    });
+                                    airQualityProgressBar.setProgress(progress);
+                                    aqiTv.setText(String.valueOf((int) aqi));
                                 }
                             }
 
@@ -526,5 +504,12 @@ public class DashboardActivity extends AppCompatActivity {
         super.onDestroy();
         // Removes pending code execution
         handler.removeCallbacks(runnable);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

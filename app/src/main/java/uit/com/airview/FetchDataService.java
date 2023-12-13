@@ -55,75 +55,91 @@ public class FetchDataService extends Service {
             public void onResponse(@NonNull Call<Asset> call, @NonNull retrofit2.Response<Asset> response) {
                 assert response.body() != null;
                 Asset asset = response.body();
-                Call<PM> call2 = apiInterface.getPM("Bearer " + token);
-                call2.enqueue(new retrofit2.Callback<PM>() {
+
+                // Calculate AQI
+                double aqi = asset.getAttributes().calculateAQI();
+
+                //Get weather
+                APIInterface apiInterface1 = APIClient.getOpenWeatherMapClient(FetchDataService.this).create(APIInterface.class);
+                Call<OpenWeather> call1 = apiInterface1.getWeatherData(10.869778736885038, 106.80280655508835, "metric");
+                call1.enqueue(new retrofit2.Callback<OpenWeather>() {
                     @SuppressLint("DefaultLocale")
                     @Override
-                    public void onResponse(@NonNull Call<PM> call, @NonNull retrofit2.Response<PM> response) {
-                        assert response.body() != null;
-                        PM pm = response.body();
+                    public void onResponse(@NonNull Call<OpenWeather> call, @NonNull retrofit2.Response<OpenWeather> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            OpenWeather openWeather = response.body();
 
-                        // Calculate AQI
-                        double aqi = asset.getAttributes().calculateAQI(pm.getAttributes().getPM25(), pm.getAttributes().getPM10());
+                            //Change weather unit
+                            double temp;
+                            if (sharedPreferences.getInt("unit", 1) == 0) {
+                                temp = openWeather.getTemp() + 273.15;
+                            } else if (sharedPreferences.getInt("unit", 1) == 2) {
+                                temp = openWeather.getTemp() * 1.8 + 32;
+                            } else {
+                                temp = openWeather.getTemp();
+                            }
 
-                        //Get weather
-                        APIInterface apiInterface1 = APIClient.getOpenWeatherMapClient(FetchDataService.this).create(APIInterface.class);
-                        Call<OpenWeather> call3 = apiInterface1.getWeatherData(10.869778736885038, 106.80280655508835, "metric");
-                        call3.enqueue(new retrofit2.Callback<OpenWeather>() {
-                            @Override
-                            public void onResponse(@NonNull Call<OpenWeather> call, @NonNull retrofit2.Response<OpenWeather> response) {
-                                assert response.body() != null;
-                                OpenWeather openWeather = response.body();
-                                if(sharedPreferences.getInt("unit",1) == 0){
-                                    double temp = openWeather.getTemp() + 273.15;
-                                }
-                                else if(sharedPreferences.getInt("unit",1) == 2){
-                                    double temp = openWeather.getTemp() * 1.8 + 32;
-                                }
-                                double temp = openWeather.getTemp();
+                            //Demo data
+                            Random rand = new Random();
+                            double aqiDemo = 100 + rand.nextDouble() * (300 - 200);
+                            double tempDemo = 20 + rand.nextDouble() * (35 - 20);
+                            double humidDemo = 30 + rand.nextDouble() * (90 - 30);
 
-
-                                //Demo data
-                                Random rand = new Random();
-                                double aqiDemo = 100 + rand.nextDouble() * (300 - 200);
-                                double tempDemo = 20 + rand.nextDouble() * (35 - 20);
-                                double humidDemo = 30 + rand.nextDouble() * (90 - 30);
-
-                                // Save the data to Firebase
-                                String userId = sharedPreferences.getString("user_id", null);
-                                assert userId != null;
+                            // Save the data to Firebase
+                            String userId = sharedPreferences.getString("user_id", null);
+                            assert userId != null;
 //                                AirQualityReading reading = new AirQualityReading(aqi, openWeather.getTemp(), openWeather.getHumidity(), System.currentTimeMillis());
-                                AirQualityReading reading = new AirQualityReading(aqiDemo, tempDemo, humidDemo, System.currentTimeMillis());
-                                ref.child(userId).push().setValue(reading);
+                            AirQualityReading reading = new AirQualityReading(aqiDemo, tempDemo, humidDemo, System.currentTimeMillis());
+                            ref.child(userId).push().setValue(reading);
 
-                                // Send notification
-                                if(temp > Double.parseDouble(Objects.requireNonNull(sharedPreferences.getString("temp", null))))
+                            //temp threshold
+                            String tempThreshold = sharedPreferences.getString("temp", null);
+                            if (tempThreshold != null) {
+                                double tempThresholdValue = Double.parseDouble(tempThreshold);
+                                if (temp > tempThresholdValue) {
                                     sendNotification("The temperature is higher than the threshold", FetchDataService.this);
-                                if(aqi > Double.parseDouble(Objects.requireNonNull(sharedPreferences.getString("aqi", null))))
-                                    sendNotification("The AQI is higher than the threshold", FetchDataService.this);
-                                if(openWeather.getHumidity() > Double.parseDouble(Objects.requireNonNull(sharedPreferences.getString("humid", null))))
+                                }
+                            }
+
+                            //humid threshold
+                            String humidThreshold = sharedPreferences.getString("humid", null);
+                            if (humidThreshold != null) {
+                                double humidThresholdValue = Double.parseDouble(humidThreshold);
+                                if (openWeather.getHumidity() > humidThresholdValue) {
                                     sendNotification("The humidity is higher than the threshold", FetchDataService.this);
-                                sendNotification(String.format("%.3f", aqi), String.valueOf(openWeather.getTemp()), String.valueOf(openWeather.getHumidity()), FetchDataService.this);
+                                }
                             }
 
-                            @Override
-                            public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
-
+                            //aqi threshold
+                            String aqiThreshold = sharedPreferences.getString("aqi", null);
+                            if (aqiThreshold != null) {
+                                double aqiThresholdValue = Double.parseDouble(aqiThreshold);
+                                if (aqi > aqiThresholdValue) {
+                                    sendNotification("The AQI is higher than the threshold", FetchDataService.this);
+                                }
                             }
-                        });
+
+                             sendNotification(String.format("%.3f", aqi), String.valueOf(openWeather.getTemp()), String.valueOf(openWeather.getHumidity()), FetchDataService.this);
+
+                        } else {
+                            // handle the error
+
+                        }
                     }
+
                     @Override
-                    public void onFailure(@NonNull Call<PM> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
 
                     }
                 });
             }
+
             @Override
             public void onFailure(@NonNull Call<Asset> call, @NonNull Throwable t) {
 
             }
         });
-        //
+
         return START_STICKY;
     }
 
@@ -150,6 +166,7 @@ public class FetchDataService extends Service {
 
         notificationManager.notify(1, notificationBuilder.build());
     }
+
     private void sendNotification(String content, Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
