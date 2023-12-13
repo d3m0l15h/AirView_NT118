@@ -24,7 +24,38 @@
     <string name="userErr">Username already exists!</string>
     <string name="signupSucc">Signup successfully</string>
     <string name="welcome">"Welcome, "</string>
-    <string name="title_activity_dashboard">DashboardActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_dashboard" translatable="false">DashboardActivity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Sign Out</string>
+    <string name="settings">Settings</string>
+    <string name="chart">Chart</string>
+    <string name="temp">Temperature</string>
+    <string name="humid">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="weather">Weather</string>
+    <string name="feelsLike">Feels like</string>
+    <string name="notifiSetting">Notification Settings</string>
+    <string name="selectSettingTv">Select unit options</string>
+    <string name="save">Save</string>
+    <string name="units">Units</string>
+    <string name="windSpeed">Wind</string>
+    <string name="clearSky">Clear Sky</string>
+    <string name="fewClouds">Few Clouds</string>
+    <string name="scatterClouds">Scattered Clouds</string>
+    <string name="brokenClouds">Broken Clouds</string>
+    <string name="showerRain">Shower Rain</string>
+    <string name="rain">Rain</string>
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="clear">Clear</string>
+    <string name="clouds">Clouds</string>
+    <string name="firstName">First Name:</string>
+    <string name="lastName">Last Name:</string>
+    <string name="day">Day</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="show">Show</string>
+    <string name="selectAttr">Select Attributes</string>
+    <string name="timeFrame">Timeframe</string>
 </resources>

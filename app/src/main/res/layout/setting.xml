@@ -19,7 +19,7 @@
             android:background="@color/black"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="@drawable/back_btn"
-            app:title="Setting"
+            app:title="@string/settings"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,7 +36,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Temperature:"
+            android:text="@string/temp"
             android:textSize="18sp" />
 
         <EditText
@@ -64,7 +64,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Humidity:"
+            android:text="@string/humid"
             android:textSize="18sp" />
 
         <EditText
@@ -91,7 +91,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="AQI:"
+            android:text="AQI"
             android:textSize="18sp" />
 
         <EditText
@@ -110,7 +110,7 @@
         android:layout_below="@id/topBar"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:text="Notification settings"
+        android:text="@string/notifiSetting"
         android:textSize="20sp" />
 
     <TextView
@@ -120,7 +120,7 @@
         android:layout_below="@id/aqiLayout"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
-        android:text="Unit"
+        android:text="@string/units"
         android:textSize="20sp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -132,7 +132,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
-        android:hint="Select unit options">
+        android:hint="@string/selectSettingTv">
 
         <AutoCompleteTextView
             android:id="@+id/attributeMenu"
@@ -148,7 +148,7 @@
         android:layout_below="@id/menu"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="Save" />
+        android:text="@string/save" />
 
 
 </RelativeLayout>

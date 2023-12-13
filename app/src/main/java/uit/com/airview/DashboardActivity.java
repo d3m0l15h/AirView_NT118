@@ -205,17 +205,84 @@ public class DashboardActivity extends AppCompatActivity {
         //Day of week
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         String weekDay = dayFormat.format(calendar.getTime());
+        switch (weekDay) {
+            case "Monday":
+                weekDay = "Thứ Hai";
+                break;
+            case "Tuesday":
+                weekDay = "Thứ Ba";
+                break;
+            case "Wednesday":
+                weekDay = "Thứ Tư";
+                break;
+            case "Thursday":
+                weekDay = "Thứ Năm";
+                break;
+            case "Friday":
+                weekDay = "Thứ Sáu";
+                break;
+            case "Saturday":
+                weekDay = "Thứ Bảy";
+                break;
+            case "Sunday":
+                weekDay = "Chủ Nhật";
+                break;
+        }
         date.setText(weekDay.toUpperCase());
         //Day, Month, Year
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy.", Locale.getDefault());
         String formattedDate = dateFormat.format(calendar.getTime());
+        String[] dateParts = formattedDate.split(" ");
+        String month = dateParts[1].replace(",", ""); // remove the comma
+
+        switch (month) {
+            case "January":
+                month = "Tháng 1,"; // replace with Vietnamese month
+                break;
+            case "February":
+                month = "Tháng 2,";
+                break;
+            case "March":
+                month = "Tháng 3,";
+                break;
+            case "April":
+                month = "Tháng 4,";
+                break;
+            case "May":
+                month = "Tháng 5,";
+                break;
+            case "June":
+                month = "Tháng 6,";
+                break;
+            case "July":
+                month = "Tháng 7,";
+                break;
+            case "August":
+                month = "Tháng 8,";
+                break;
+            case "September":
+                month = "Tháng 9,";
+                break;
+            case "October":
+                month = "Tháng 10,";
+                break;
+            case "November":
+                month = "Tháng 11,";
+                break;
+            case "December":
+                month = "Tháng 12,";
+                break;
+        }
+        // Replace the month in the original date string
+        formattedDate = formattedDate.replace(dateParts[1], month);
+
         dmy.setText(formattedDate.toUpperCase());
 
         runnable = () -> {
             //Get weather
             APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(DashboardActivity.this).create(APIInterface.class);
             String unit = sharedPreferences.getInt("unit", 1) == 0 ? "standard" : sharedPreferences.getInt("unit", 1) == 1 ? "metric" : "imperial";
-            Call<OpenWeather> call1 = apiInterface2.getWeatherData(10.869778736885038,106.80280655508835, unit);
+            Call<OpenWeather> call1 = apiInterface2.getWeatherData(10.869778736885038, 106.80280655508835, unit);
             call1.enqueue(new retrofit2.Callback<OpenWeather>() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -229,45 +296,45 @@ public class DashboardActivity extends AppCompatActivity {
                         switch (openWeather.getWeatherDescription()) {
                             case "scattered clouds":
                                 weatherImg.setImageResource(R.mipmap.clouds);
-                                weatherTv.setText(openWeather.getWeather());
+                                weatherTv.setText(getString(R.string.clouds));
                                 break;
                             case "clear sky":
                                 if (hour >= 18 || hour < 6)
                                     weatherImg.setImageResource(R.mipmap.night_clear_sky);
                                 else
                                     weatherImg.setImageResource(R.mipmap.day_few_clouds);
-                                weatherTv.setText(openWeather.getWeather());
+                                weatherTv.setText(getString(R.string.clear));
                                 break;
                             case "shower rain":
                                 weatherImg.setImageResource(R.mipmap.shower_rain);
-                                weatherTv.setText(openWeather.getWeather());
+                                weatherTv.setText(getString(R.string.rain));
                                 break;
                             case "rain":
                                 if (hour >= 18 || hour < 6)
                                     weatherImg.setImageResource(R.mipmap.night_rain);
                                 else
                                     weatherImg.setImageResource(R.mipmap.day_rain);
-                                weatherTv.setText(openWeather.getWeather());
+                                weatherTv.setText(getString(R.string.rain));
                                 break;
                             case "few clouds":
                                 if (hour >= 18 || hour < 6)
                                     weatherImg.setImageResource(R.mipmap.night_few_clouds);
                                 else
                                     weatherImg.setImageResource(R.mipmap.day_few_clouds);
-                                weatherTv.setText(openWeather.getWeather());
+                                weatherTv.setText(getString(R.string.clouds));
                                 break;
                             case "broken clouds":
                                 weatherImg.setImageResource(R.mipmap.clouds);
-                                weatherTv.setText(openWeather.getWeather());
+                                weatherTv.setText(getString(R.string.clouds));
                                 break;
                             case "thunderstorm":
                                 weatherImg.setImageResource(R.mipmap.storm);
-                                weatherTv.setText(openWeather.getWeather());
+                                weatherTv.setText(getString(R.string.thunderstorm));
                                 break;
                         }
 
                         // Get wind
-                        if(unit.equals("imperial"))
+                        if (unit.equals("imperial"))
                             windTv.setText(openWeather.getWindSpeed() + " m/h");
                         else
                             windTv.setText(openWeather.getWindSpeed() + " m/s");

@@ -17,7 +17,7 @@
             android:background="@color/black"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="@drawable/back_btn"
-            app:title="Chart"
+            app:title="@string/chart"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="20dp"
-                    android:hint="Select Attribute">
+                    android:hint="@string/selectAttr">
 
                     <AutoCompleteTextView
                         android:id="@+id/attributeMenu"
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:hint="Timeframe">
+                    android:hint="@string/timeFrame">
 
                     <AutoCompleteTextView
                         android:id="@+id/attributeMenu2"
@@ -72,7 +72,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:focusable="false"
-                android:hint="Date"
+                android:hint="@string/day"
                 app:startIconContentDescription="Enter Date"
                 app:startIconDrawable="@drawable/calendar_month">
 
@@ -91,11 +91,10 @@
                 style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Show"
-                app:icon="@drawable/tab_search"
                 android:layout_gravity="center"
-                />
+                android:layout_marginTop="20dp"
+                android:text="@string/show"
+                app:icon="@drawable/tab_search" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChart"

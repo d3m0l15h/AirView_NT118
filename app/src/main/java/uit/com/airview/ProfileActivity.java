@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen6);
@@ -27,14 +28,11 @@ public class ProfileActivity extends Activity {
         lastName.setText(sharedPreferences.getString("lastname", ""));
         firstName.setText(sharedPreferences.getString("firstname", ""));
 
-        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle navigation icon press
-                Intent intent = new Intent(v.getContext(), DashboardActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        topAppBar.setNavigationOnClickListener(v -> {
+            // Handle navigation icon press
+            Intent intent = new Intent(v.getContext(), DashboardActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 }
