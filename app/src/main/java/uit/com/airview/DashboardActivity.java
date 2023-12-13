@@ -83,16 +83,16 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_profile) {
                 Intent intent = new Intent(DashboardActivity.this, ProfileActivity.class);
-                finish();
                 startActivity(intent);
+                finish();
             } else if (id == R.id.nav_chart) {
                 Intent intent = new Intent(DashboardActivity.this, ChartActivity.class);
-                finish();
                 startActivity(intent);
+                finish();
             } else if (id == R.id.nav_settings) {
                 Intent intent = new Intent(DashboardActivity.this, SettingActivity.class);
-                finish();
                 startActivity(intent);
+                finish();
             }
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
@@ -526,5 +526,12 @@ public class DashboardActivity extends AppCompatActivity {
         super.onDestroy();
         // Removes pending code execution
         handler.removeCallbacks(runnable);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -66,7 +66,12 @@ public class SettingActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.save, Toast.LENGTH_SHORT).show();
         });
 
-
-
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

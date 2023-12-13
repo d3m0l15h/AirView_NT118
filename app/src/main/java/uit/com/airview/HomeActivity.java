@@ -110,8 +110,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             temperature.setText("Temperature: 25°C");
         } else if (Objects.equals(marker.getTitle(), "Asset2")) {//Asset 2
             //Get weather
+            String unit = sharedPreferences.getInt("unit", 1) == 0 ? "standard" : sharedPreferences.getInt("unit", 1) == 1 ? "metric" : "imperial";
             APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(HomeActivity.this).create(APIInterface.class);
-            Call<OpenWeather> call2 = apiInterface2.getWeatherData(10.869778736885038,106.80280655508835,"metric");
+            Call<OpenWeather> call2 = apiInterface2.getWeatherData(10.869778736885038,106.80280655508835,unit);
             call2.enqueue(new retrofit2.Callback<OpenWeather>() {
                 @SuppressLint("DefaultLocale")
                 @Override
@@ -123,9 +124,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         //Set weather
                         place.setText(openWeather.getCountry()+", "+openWeather.getCity());
-                        temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp()+"°C");
+                        // Get temperature
+                        switch (unit) {
+                            case "imperial":
+                                temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp() + "°F");
+                                feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike() + "°F");
+                                break;
+                            case "standard":
+                                temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp() + "°K");
+                                feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike() + "°K");
+                                break;
+                            case "metric":
+                                temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp() + "°C");
+                                feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike() + "°C");
+                                break;
+                        }
+
                         humidity.setText(getString(R.string.humid)+": "+openWeather.getHumidity()+"%");
-                        feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike()+"°C");
                         pressure.setText(getString(R.string.pressure)+": "+openWeather.getPressure()+"hPa");
                         switch (openWeather.getWeatherDescription()){
                             case "clear sky":
@@ -163,6 +178,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         infoBtn.setOnClickListener(view->{
             Intent intent = new Intent(HomeActivity.this, DashboardActivity.class);
             startActivity(intent);
+            finish();
         });
 
         //Dialog set content view
