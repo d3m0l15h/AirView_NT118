@@ -188,6 +188,16 @@ public class FetchDataService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_HIGH) // for Android versions lower than 8.0
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC); // show on lock screen
 
-        notificationManager.notify(1, notificationBuilder.build());
+        switch (content) {
+            case "The temperature is higher than the threshold":
+                notificationManager.notify(2, notificationBuilder.build());
+                break;
+            case "The humidity is higher than the threshold":
+                notificationManager.notify(3, notificationBuilder.build());
+                break;
+            case "The AQI is higher than the threshold":
+                notificationManager.notify(4, notificationBuilder.build());
+                break;
+        }
     }
 }
