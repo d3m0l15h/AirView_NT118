@@ -3,7 +3,6 @@ package uit.com.airview;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,7 +17,7 @@ import uit.com.airview.response.LoginResponse;
 import uit.com.airview.response.UserResponse;
 import uit.com.airview.util.APIClient;
 import uit.com.airview.util.APIInterface;
-import uit.com.airview.util.ResetPasswordBody;
+import uit.com.airview.model.ResetPasswordBody;
 
 public class ResetPwdActivity extends BaseActivity {
     private APIInterface apiInterface;
@@ -33,7 +32,7 @@ public class ResetPwdActivity extends BaseActivity {
         setContentView(R.layout.reset_pwd);
         setupLanguageButton(R.id.languageBtn);
 
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+        apiInterface = APIClient.getClient(this).create(APIInterface.class);
 
         //Back button
         Button rs_back = findViewById(R.id.rs_back);

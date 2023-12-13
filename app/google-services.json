@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "688055819625",
+    "project_id": "airview-406715",
+    "storage_bucket": "airview-406715.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688055819625:android:e8afccd1cb9c06d4c571f8",
+        "android_client_info": {
+          "package_name": "uit.com.airview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPghBD83iz_dPlfozi3RvF-Z6OM6VV5FA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,27 +1,400 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".DashboardActivity">
 
-    <TextView
-        android:id="@+id/home_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@id/imageView5"
-        android:text=" "
-        android:textSize="20sp" />
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/afternoonbg">
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="42dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        app:srcCompat="@mipmap/user" />
+        <RelativeLayout
+            android:id="@+id/aqiLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/afternoon_circle_shape">
 
-</RelativeLayout>
+            <com.google.android.material.circularreveal.CircularRevealFrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/airQualityProgressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:indeterminate="false"
+                    android:progress="30"
+                    android:progressDrawable="@drawable/circular_progress_bar" />
+            </com.google.android.material.circularreveal.CircularRevealFrameLayout>
+
+
+            <uit.com.airview.util.StrokeTextView
+                android:id="@+id/aqi"
+                android:layout_width="102dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="45dp"
+                android:fontFamily="@font/roboto_mono_bold"
+                android:text="500"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp" />
+
+            <uit.com.airview.util.StrokeTextView
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/aqi"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_mono_bold"
+                android:text="AQI"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:background="@drawable/afternoon_border"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/navbar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:background="#00FFFFFF"
+                android:scaleType="fitCenter"
+                android:src="@drawable/menu"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:id="@+id/userIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                app:srcCompat="@mipmap/user" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="245dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/userIcon"
+                android:text="Welcome, user "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/dayLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/aqiLayout"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/afternoon_widget"
+            android:orientation="vertical">
+
+            <uit.com.airview.util.StrokeTextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_black"
+                android:paddingTop="5dp"
+                android:text="FRIDAY"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="50sp" />
+
+            <uit.com.airview.util.StrokeTextView
+                android:id="@+id/dmy"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/roboto_black"
+                android:text="08 DECEMBER, 2023."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/weatherLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/dayLayout"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/aqiLayout"
+            android:background="@drawable/afternoon_widget"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/weather"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/day_few_clouds" />
+
+            <uit.com.airview.util.StrokeTextView
+                android:id="@+id/weatherTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Thunderstorm"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sunriseLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/weatherLayout"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/aqiLayout"
+            android:background="@drawable/afternoon_widget"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/sunrise" />
+
+            <uit.com.airview.util.StrokeTextView
+                android:id="@+id/sunriseTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="06:09"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sunsetLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/windLayout"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndOf="@id/aqiLayout"
+            android:background="@drawable/afternoon_widget"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/sunset" />
+
+            <uit.com.airview.util.StrokeTextView
+                android:id="@+id/sunsetTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="17:39"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/windLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/dayLayout"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndOf="@id/aqiLayout"
+            android:background="@drawable/afternoon_widget"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/wind"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/wind" />
+
+            <uit.com.airview.util.StrokeTextView
+                android:id="@+id/windTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="2.06 km/h"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/standard_bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_dialog"
+                app:behavior_peekHeight="200dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+                <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+                    android:id="@+id/drag_handle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="Current air quality"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/thermometer"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/thermometer_low"
+                            app:tint="@color/red" />
+
+                    <TextView
+                        android:id="@+id/temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/water_percent"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/water_percent"
+                            app:tint="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/humidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/molecule_co2"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/molecule_co2"
+                            app:tint="@color/black" />
+
+                        <TextView
+                            android:id="@+id/air"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:menu="@menu/drawer_menu" />
+
+        <Button
+            android:id="@+id/nav_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="#00FFFFFF"
+            android:text="Sign Out"
+            android:textColor="@color/black"
+            app:icon="@mipmap/logout"
+            app:iconTint="#000000" />
+
+    </FrameLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

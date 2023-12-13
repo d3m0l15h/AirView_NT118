@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/tv_marker_title"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/infoBtn"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Asset"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/place"
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_marker_title"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/roboto_black"
+        android:text="VN, Bien Hoa"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/place"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/imageView"
+        android:text="Temperature: xx.xx°C" />
+
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/temperature"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@id/imageView6"
+        android:text="Humidity: xx%" />
+
+    <TextView
+        android:id="@+id/weather"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/humidity"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="15dp"
+        android:layout_toEndOf="@id/imageView8"
+
+        android:text="Weather: " />
+
+    <TextView
+        android:id="@+id/feels_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/place"
+
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/imageView5"
+        android:text="Feels like: xx.xx°C" />
+
+    <TextView
+        android:id="@+id/pressure"
+        android:layout_width="142dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/feels_like"
+
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@id/imageView5"
+        android:text="Pressure: xxxx"
+        tools:layout_toEndOf="@id/imageView7" />
+
+    <Button
+        android:id="@+id/infoBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6750A3"
+        android:layout_centerHorizontal="true"
+        android:text="More info"
+        app:cornerRadius="1dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/place"
+        android:layout_marginStart="10dp"
+        app:srcCompat="@mipmap/temperature" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/imageView"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@mipmap/humidity" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/imageView6"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        app:srcCompat="@mipmap/weather" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/place"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/temperature"
+        app:srcCompat="@mipmap/man" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/imageView5"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/humidity"
+        app:srcCompat="@mipmap/pressure" />
+</RelativeLayout>

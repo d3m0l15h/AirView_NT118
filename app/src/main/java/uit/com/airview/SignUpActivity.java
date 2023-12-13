@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SignUpActivity extends BaseActivity {
     private Button back;
     private Button signUp;
+    private TextView toSignIn;
     private EditText username;
     private EditText email;
     private EditText pwd;
@@ -28,6 +31,13 @@ public class SignUpActivity extends BaseActivity {
             finish();
         });
 
+        // To Sign In Activity
+        toSignIn = findViewById(R.id.s2_toSignIn);
+        toSignIn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+        });
+
         //Input data
         username = findViewById(R.id.s2_username);
         email = findViewById(R.id.s2_email);
@@ -37,6 +47,10 @@ public class SignUpActivity extends BaseActivity {
         //Sign up button
         signUp = findViewById(R.id.s2_signUp);
         signUp.setOnClickListener(view -> {
+            if(username.getText().toString().trim().isEmpty() || email.getText().toString().trim().isEmpty() || pwd.getText().toString().trim().isEmpty() || rePwd.getText().toString().trim().isEmpty()){
+                Toast.makeText(this, "Fill in the blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent();
             intent.setClass(this, SignUpEmbed.class);
 
