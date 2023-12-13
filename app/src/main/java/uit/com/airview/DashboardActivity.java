@@ -207,25 +207,25 @@ public class DashboardActivity extends AppCompatActivity {
         String weekDay = dayFormat.format(calendar.getTime());
         switch (weekDay) {
             case "Monday":
-                weekDay = "Thứ Hai";
+                weekDay = getString(R.string.monday);
                 break;
             case "Tuesday":
-                weekDay = "Thứ Ba";
+                weekDay = getString(R.string.tuesday);
                 break;
             case "Wednesday":
-                weekDay = "Thứ Tư";
+                weekDay = getString(R.string.wednesday);
                 break;
             case "Thursday":
-                weekDay = "Thứ Năm";
+                weekDay = getString(R.string.thursday);
                 break;
             case "Friday":
-                weekDay = "Thứ Sáu";
+                weekDay = getString(R.string.friday);
                 break;
             case "Saturday":
-                weekDay = "Thứ Bảy";
+                weekDay = getString(R.string.saturday);
                 break;
             case "Sunday":
-                weekDay = "Chủ Nhật";
+                weekDay = getString(R.string.sunday);
                 break;
         }
         date.setText(weekDay.toUpperCase());
@@ -237,40 +237,40 @@ public class DashboardActivity extends AppCompatActivity {
 
         switch (month) {
             case "January":
-                month = "Tháng 1,"; // replace with Vietnamese month
+                month = getString(R.string.january); // replace with Vietnamese month
                 break;
             case "February":
-                month = "Tháng 2,";
+                month = getString(R.string.january);
                 break;
             case "March":
-                month = "Tháng 3,";
+                month = getString(R.string.january);
                 break;
             case "April":
-                month = "Tháng 4,";
+                month = getString(R.string.january);
                 break;
             case "May":
-                month = "Tháng 5,";
+                month = getString(R.string.january);
                 break;
             case "June":
-                month = "Tháng 6,";
+                month = getString(R.string.january);
                 break;
             case "July":
-                month = "Tháng 7,";
+                month = getString(R.string.january);
                 break;
             case "August":
-                month = "Tháng 8,";
+                month = getString(R.string.january);
                 break;
             case "September":
-                month = "Tháng 9,";
+                month = getString(R.string.january);
                 break;
             case "October":
-                month = "Tháng 10,";
+                month = getString(R.string.january);
                 break;
             case "November":
-                month = "Tháng 11,";
+                month = getString(R.string.january);
                 break;
             case "December":
-                month = "Tháng 12,";
+                month = getString(R.string.january);
                 break;
         }
         // Replace the month in the original date string
