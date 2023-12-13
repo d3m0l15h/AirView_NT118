@@ -1,6 +1,7 @@
 package uit.com.airview;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -36,7 +37,19 @@ import uit.com.airview.util.APIInterface;
 public class FetchDataService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //
+        // Create a notification for the foreground service
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default")
+                .setContentTitle("AirView")
+                .setContentText("Service is running...")
+                .setSmallIcon(R.mipmap.air)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+        Notification notification = builder.build();
+
+        // Start the service in the foreground
+        startForeground(1, notification);
+
         APIInterface apiInterface = APIClient.getClient(this).create(APIInterface.class);
         SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
         if (!sharedPreferences.getBoolean("isLoggedIn", false)) {
@@ -79,22 +92,16 @@ public class FetchDataService extends Service {
                                 temp = openWeather.getTemp();
                             }
 
-                            //Demo data
-                            Random rand = new Random();
-                            double aqiDemo = 100 + rand.nextDouble() * (300 - 200);
-                            double tempDemo = 20 + rand.nextDouble() * (35 - 20);
-                            double humidDemo = 30 + rand.nextDouble() * (90 - 30);
-
                             // Save the data to Firebase
                             String userId = sharedPreferences.getString("user_id", null);
                             assert userId != null;
-//                                AirQualityReading reading = new AirQualityReading(aqi, openWeather.getTemp(), openWeather.getHumidity(), System.currentTimeMillis());
-                            AirQualityReading reading = new AirQualityReading(aqiDemo, tempDemo, humidDemo, System.currentTimeMillis());
+                            AirQualityReading reading = new AirQualityReading(aqi, openWeather.getTemp(), openWeather.getHumidity(), System.currentTimeMillis());
+
                             ref.child(userId).push().setValue(reading);
 
                             //temp threshold
                             String tempThreshold = sharedPreferences.getString("temp", null);
-                            if (tempThreshold != null) {
+                            if (tempThreshold != null && !tempThreshold.isEmpty()) {
                                 double tempThresholdValue = Double.parseDouble(tempThreshold);
                                 if (temp > tempThresholdValue) {
                                     sendNotification("The temperature is higher than the threshold", FetchDataService.this);
@@ -103,7 +110,7 @@ public class FetchDataService extends Service {
 
                             //humid threshold
                             String humidThreshold = sharedPreferences.getString("humid", null);
-                            if (humidThreshold != null) {
+                            if (humidThreshold != null && !humidThreshold.isEmpty()) {
                                 double humidThresholdValue = Double.parseDouble(humidThreshold);
                                 if (openWeather.getHumidity() > humidThresholdValue) {
                                     sendNotification("The humidity is higher than the threshold", FetchDataService.this);
@@ -112,7 +119,7 @@ public class FetchDataService extends Service {
 
                             //aqi threshold
                             String aqiThreshold = sharedPreferences.getString("aqi", null);
-                            if (aqiThreshold != null) {
+                            if (aqiThreshold != null && !aqiThreshold.isEmpty()) {
                                 double aqiThresholdValue = Double.parseDouble(aqiThreshold);
                                 if (aqi > aqiThresholdValue) {
                                     sendNotification("The AQI is higher than the threshold", FetchDataService.this);
