@@ -376,35 +376,13 @@ public class DashboardActivity extends AppCompatActivity {
                                     //Get air quality
                                     air.setText(String.valueOf(asset.getAttributes().getCO2()));
 
-                                    //call to get PM
-                                    Call<PM> call2 = apiInterface.getPM("Bearer " + sharedPreferences.getString("user_token", ""));
-                                    call2.enqueue(new retrofit2.Callback<PM>() {
-                                        @SuppressLint("SetTextI18n")
-                                        @Override
-                                        public void onResponse(@NonNull Call<PM> call, @NonNull Response<PM> response) {
-                                            if (response.isSuccessful()) {
-                                                //Get PM response
-                                                PM pm = response.body();
-                                                assert pm != null;
-                                                //Get PM2.5
-                                                double pm25 = pm.getAttributes().getPM25();
-                                                //Get PM10
-                                                double pm10 = pm.getAttributes().getPM10();
-                                                // Calculate the AQI based on the air quality data
-                                                double aqi = asset.getAttributes().calculateAQI(pm25, pm10);
+                                    // Calculate the AQI based on the air quality data
+                                    double aqi = asset.getAttributes().calculateAQI();
 
-                                                int progress = (int) ((aqi / 500.0) * 100); // Assuming the maximum AQI is 500
+                                    int progress = (int) ((aqi / 500.0) * 100); // Assuming the maximum AQI is 500
 
-                                                airQualityProgressBar.setProgress(progress);
-                                                aqiTv.setText(String.valueOf((int) aqi));
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(@NonNull Call<PM> call, @NonNull Throwable t) {
-
-                                        }
-                                    });
+                                    airQualityProgressBar.setProgress(progress);
+                                    aqiTv.setText(String.valueOf((int) aqi));
                                 }
                             }
 

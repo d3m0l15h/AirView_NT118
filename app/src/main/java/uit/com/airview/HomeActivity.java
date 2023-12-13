@@ -37,6 +37,7 @@ import uit.com.airview.util.Util;
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private MapView mapView;
     private GoogleMap gmap;
+    private BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         sharedPreferences.edit().putString("token_type", "user").apply();
 
         gmap = googleMap;
-        LatLng asset1 = new LatLng( 10, 106);
+        LatLng asset1 = new LatLng( 10.8698, 106.8031);
         gmap.addMarker(new MarkerOptions().position(asset1).title("Asset1"));
 
         //Call asset api
@@ -87,9 +88,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker marker) {
         SharedPreferences sharedPreferences = getSharedPreferences("PREF", MODE_PRIVATE);
-        APIInterface apiInterface = APIClient.getClient(this).create(APIInterface.class);
         // Create a new BottomSheetDialog
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog = new BottomSheetDialog(this);
 
         //Inflate the layout for the bottom sheet
         @SuppressLint("InflateParams") View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
@@ -107,7 +107,69 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Set the text of the TextViews based on the clicked marker
         tvMarkerTitle.setText(marker.getTitle());
         if (Objects.equals(marker.getTitle(), "Asset1")) { // Asset 1
-            temperature.setText("Temperature: 25°C");
+            //Get weather
+            String unit = sharedPreferences.getInt("unit", 1) == 0 ? "standard" : sharedPreferences.getInt("unit", 1) == 1 ? "metric" : "imperial";
+            APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(HomeActivity.this).create(APIInterface.class);
+            Call<OpenWeather> call2 = apiInterface2.getWeatherData(10.8698,106.8031,unit);
+            call2.enqueue(new retrofit2.Callback<OpenWeather>() {
+                @SuppressLint("DefaultLocale")
+                @Override
+                public void onResponse(@NonNull Call<OpenWeather> call, @NonNull Response<OpenWeather> response) {
+                    if (response.isSuccessful()) {
+                        //Get weather response
+                        OpenWeather openWeather = response.body();
+                        assert openWeather != null;
+
+                        //Set weather
+                        place.setText(openWeather.getCountry()+", "+openWeather.getCity());
+                        // Get temperature
+                        switch (unit) {
+                            case "imperial":
+                                temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp() + "°F");
+                                feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike() + "°F");
+                                break;
+                            case "standard":
+                                temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp() + "°K");
+                                feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike() + "°K");
+                                break;
+                            case "metric":
+                                temperature.setText(getString(R.string.temp)+": "+ openWeather.getTemp() + "°C");
+                                feelsLike.setText(getString(R.string.feelsLike)+": "+openWeather.getFeelsLike() + "°C");
+                                break;
+                        }
+
+                        humidity.setText(getString(R.string.humid)+": "+openWeather.getHumidity()+"%");
+                        pressure.setText(getString(R.string.pressure)+": "+openWeather.getPressure()+"hPa");
+                        switch (openWeather.getWeatherDescription()){
+                            case "clear sky":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.clearSky)+" ☀️");
+                                break;
+                            case "few clouds":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.fewClouds)+" 🌤");
+                                break;
+                            case "scattered clouds":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.scatterClouds)+" ⛅️");
+                                break;
+                            case "broken clouds":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.brokenClouds)+" 🌥");
+                                break;
+                            case "shower rain":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.showerRain)+" 🌧");
+                                break;
+                            case "rain":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.rain)+" 🌧");
+                                break;
+                            case "thunderstorm":
+                                weather.setText(getString(R.string.weather)+": "+getString(R.string.thunderstorm)+" ⛈");
+                                break;
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(@NonNull Call<OpenWeather> call, @NonNull Throwable t) {
+                    Log.e("OpenWeatherMap", Objects.requireNonNull(t.getMessage()));
+                }
+            });
         } else if (Objects.equals(marker.getTitle(), "Asset2")) {//Asset 2
             //Get weather
             String unit = sharedPreferences.getInt("unit", 1) == 0 ? "standard" : sharedPreferences.getInt("unit", 1) == 1 ? "metric" : "imperial";
@@ -203,6 +265,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onPause() {
         mapView.onPause();
         super.onPause();
+        if (bottomSheetDialog != null) {
+            bottomSheetDialog.dismiss();
+            bottomSheetDialog = null;
+        }
     }
 
     @Override

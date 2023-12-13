@@ -69,14 +69,15 @@
             android:textColor="@color/black"
             android:textSize="25dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
 
             <TextView
-                android:layout_width="177dp"
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
@@ -87,26 +88,26 @@
 
             <TextView
                 android:id="@+id/profile_email"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@id/tv1"
                 android:text="dsdsd@gmail.com"
                 android:textAlignment="textEnd"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:padding="10dp">
 
             <TextView
-                android:layout_width="105dp"
+                android:id="@+id/tv2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:text="@string/firstName"
                 android:textColor="@color/black"
@@ -114,26 +115,26 @@
 
             <TextView
                 android:id="@+id/firstname"
-                android:layout_width="254dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@id/tv2"
                 android:text="USER"
                 android:textAlignment="textEnd"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:padding="10dp">
 
             <TextView
-                android:layout_width="105dp"
+                android:id="@+id/tv3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:text="@string/lastName"
                 android:textColor="@color/black"
@@ -141,13 +142,14 @@
 
             <TextView
                 android:id="@+id/lastname"
-                android:layout_width="253dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@id/tv3"
                 android:text="UIT1"
                 android:textAlignment="textEnd"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
