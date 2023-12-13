@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.DatabaseConfig;
 
+import java.util.Objects;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -73,6 +74,14 @@ public class FetchDataService extends Service {
                             public void onResponse(@NonNull Call<OpenWeather> call, @NonNull retrofit2.Response<OpenWeather> response) {
                                 assert response.body() != null;
                                 OpenWeather openWeather = response.body();
+                                if(sharedPreferences.getInt("unit",1) == 0){
+                                    double temp = openWeather.getTemp() + 273.15;
+                                }
+                                else if(sharedPreferences.getInt("unit",1) == 2){
+                                    double temp = openWeather.getTemp() * 1.8 + 32;
+                                }
+                                double temp = openWeather.getTemp();
+
 
                                 //Demo data
                                 Random rand = new Random();
@@ -88,6 +97,12 @@ public class FetchDataService extends Service {
                                 ref.child(userId).push().setValue(reading);
 
                                 // Send notification
+                                if(temp > Double.parseDouble(Objects.requireNonNull(sharedPreferences.getString("temp", null))))
+                                    sendNotification("The temperature is higher than the threshold", FetchDataService.this);
+                                if(aqi > Double.parseDouble(Objects.requireNonNull(sharedPreferences.getString("aqi", null))))
+                                    sendNotification("The AQI is higher than the threshold", FetchDataService.this);
+                                if(openWeather.getHumidity() > Double.parseDouble(Objects.requireNonNull(sharedPreferences.getString("humid", null))))
+                                    sendNotification("The humidity is higher than the threshold", FetchDataService.this);
                                 sendNotification(String.format("%.3f", aqi), String.valueOf(openWeather.getTemp()), String.valueOf(openWeather.getHumidity()), FetchDataService.this);
                             }
 
@@ -127,7 +142,23 @@ public class FetchDataService extends Service {
         String content = "AQI: " + aqi + " - " + "Temperature: " + temperature + "°C" + " - " + "Humidity: " + humidity + "%";
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "default")
-                .setContentTitle("Data fetched")
+                .setContentTitle("AirView")
+                .setContentText(content)
+                .setSmallIcon(R.mipmap.air) // replace with your own icon
+                .setPriority(NotificationCompat.PRIORITY_HIGH) // for Android versions lower than 8.0
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC); // show on lock screen
+
+        notificationManager.notify(1, notificationBuilder.build());
+    }
+    private void sendNotification(String content, Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationChannel channel = new NotificationChannel("default", "Default", NotificationManager.IMPORTANCE_HIGH);
+        notificationManager.createNotificationChannel(channel);
+
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "default")
+                .setContentTitle("Warning")
                 .setContentText(content)
                 .setSmallIcon(R.mipmap.air) // replace with your own icon
                 .setPriority(NotificationCompat.PRIORITY_HIGH) // for Android versions lower than 8.0

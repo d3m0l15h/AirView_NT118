@@ -73,16 +73,20 @@ public class ChartActivity extends AppCompatActivity {
         MaterialAutoCompleteTextView attrTextField = findViewById(R.id.attributeMenu);
         @SuppressLint("WrongViewCast")
         MaterialAutoCompleteTextView tfTextField = findViewById(R.id.attributeMenu2); // Replace R.id.textField with your actual view ID
+
+        //Attribute
         if (attrTextField != null) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, attrItems);
             attrTextField.setAdapter(adapter);
         }
 
+        //Time frame
         if (tfTextField != null) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, tfItems);
             tfTextField.setAdapter(adapter);
         }
 
+        //Date picker
         dateTextField.setStartIconOnClickListener(v -> {
             MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("Select date")
@@ -97,6 +101,7 @@ public class ChartActivity extends AppCompatActivity {
             });
         });
 
+        //Top bar
         topAppBar.setNavigationOnClickListener(v -> {
             // Handle navigation icon press
             Intent intent = new Intent(v.getContext(), DashboardActivity.class);
@@ -104,6 +109,7 @@ public class ChartActivity extends AppCompatActivity {
             finish();
         });
 
+        //Show chart
         showButton.setOnClickListener(v -> {
             //Achieve data
             assert userId != null;

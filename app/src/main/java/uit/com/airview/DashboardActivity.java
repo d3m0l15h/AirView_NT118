@@ -83,9 +83,15 @@ public class DashboardActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_profile) {
                 Intent intent = new Intent(DashboardActivity.this, ProfileActivity.class);
+                finish();
                 startActivity(intent);
             } else if (id == R.id.nav_chart) {
                 Intent intent = new Intent(DashboardActivity.this, ChartActivity.class);
+                finish();
+                startActivity(intent);
+            } else if (id == R.id.nav_settings) {
+                Intent intent = new Intent(DashboardActivity.this, SettingActivity.class);
+                finish();
                 startActivity(intent);
             }
             drawerLayout.closeDrawer(GravityCompat.END);
@@ -97,7 +103,7 @@ public class DashboardActivity extends AppCompatActivity {
             // Set the isLoggedIn flag to false
             sharedPreferences.edit().putBoolean("isLoggedIn", false).apply();
             // Clear all the data in the shared preferences
-            String[] keys = {"user_id", "email", "username", "password", "realmId", "token_type", "user_token", "admin_token", "firstname", "lastname"};
+            String[] keys = {"user_id", "email", "username", "password", "realmId", "token_type", "user_token", "admin_token", "firstname", "lastname", "temp", "humid", "aqi", "unit"};
             for (String key : keys) {
                 sharedPreferences.edit().remove(key);
             }
@@ -208,7 +214,8 @@ public class DashboardActivity extends AppCompatActivity {
         runnable = () -> {
             //Get weather
             APIInterface apiInterface2 = APIClient.getOpenWeatherMapClient(DashboardActivity.this).create(APIInterface.class);
-            Call<OpenWeather> call1 = apiInterface2.getWeatherData(10.869778736885038,106.80280655508835, "metric");
+            String unit = sharedPreferences.getInt("unit", 1) == 0 ? "standard" : sharedPreferences.getInt("unit", 1) == 1 ? "metric" : "imperial";
+            Call<OpenWeather> call1 = apiInterface2.getWeatherData(10.869778736885038,106.80280655508835, unit);
             call1.enqueue(new retrofit2.Callback<OpenWeather>() {
                 @SuppressLint("SetTextI18n")
                 @Override
@@ -260,7 +267,10 @@ public class DashboardActivity extends AppCompatActivity {
                         }
 
                         // Get wind
-                        windTv.setText(openWeather.getWindSpeed() + " m/s");
+                        if(unit.equals("imperial"))
+                            windTv.setText(openWeather.getWindSpeed() + " m/h");
+                        else
+                            windTv.setText(openWeather.getWindSpeed() + " m/s");
 
                         // Get sunrise
                         sunriseTv.setText(Util.epochToFormattedTime(openWeather.getSunrise()));
@@ -269,7 +279,17 @@ public class DashboardActivity extends AppCompatActivity {
                         sunsetTv.setText(Util.epochToFormattedTime(openWeather.getSunset()));
 
                         // Get temperature
-                        temperature.setText(openWeather.getTemp() + "°C");
+                        switch (unit) {
+                            case "imperial":
+                                temperature.setText(openWeather.getTemp() + "°F");
+                                break;
+                            case "standard":
+                                temperature.setText(openWeather.getTemp() + "°K");
+                                break;
+                            case "metric":
+                                temperature.setText(openWeather.getTemp() + "°C");
+                                break;
+                        }
 
                         // Get humidity
                         humidity.setText(openWeather.getHumidity() + "%");
