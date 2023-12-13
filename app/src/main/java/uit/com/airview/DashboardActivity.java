@@ -240,37 +240,37 @@ public class DashboardActivity extends AppCompatActivity {
                 month = getString(R.string.january); // replace with Vietnamese month
                 break;
             case "February":
-                month = getString(R.string.january);
+                month = getString(R.string.february);
                 break;
             case "March":
-                month = getString(R.string.january);
+                month = getString(R.string.march);
                 break;
             case "April":
-                month = getString(R.string.january);
+                month = getString(R.string.april);
                 break;
             case "May":
-                month = getString(R.string.january);
+                month = getString(R.string.may);
                 break;
             case "June":
-                month = getString(R.string.january);
+                month = getString(R.string.june);
                 break;
             case "July":
-                month = getString(R.string.january);
+                month = getString(R.string.july);
                 break;
             case "August":
-                month = getString(R.string.january);
+                month = getString(R.string.august);
                 break;
             case "September":
-                month = getString(R.string.january);
+                month = getString(R.string.september);
                 break;
             case "October":
-                month = getString(R.string.january);
+                month = getString(R.string.october);
                 break;
             case "November":
-                month = getString(R.string.january);
+                month = getString(R.string.november);
                 break;
             case "December":
-                month = getString(R.string.january);
+                month = getString(R.string.december);
                 break;
         }
         // Replace the month in the original date string
